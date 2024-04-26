@@ -1,6 +1,9 @@
 <template>
   <div class="p-4">
-    <GrowCard :loading="loading" class="enter-y" />
+    <!-- <GrowCard :loading="loading" class="enter-y" /> -->
+    <TopCard />
+    <SearchMenu />
+
     <SiteAnalysis class="!my-4 enter-y" :loading="loading" />
     <div class="md:flex enter-y">
       <VisitRadar class="md:w-1/3 w-full" :loading="loading" />
@@ -10,16 +13,19 @@
   </div>
 </template>
 <script lang="ts" setup>
-  import { ref } from 'vue';
-  import GrowCard from '../components/GrowCard.vue';
-  import SiteAnalysis from '../components/SiteAnalysis.vue';
-  import VisitSource from '../components/VisitSource.vue';
-  import VisitRadar from '../components/VisitRadar.vue';
-  import SalesProductPie from '../components/SalesProductPie.vue';
+import { ref } from "vue";
+//   import GrowCard from '../components/GrowCard.vue';
+import TopCard from "../TopCard/index.vue";
+import SearchMenu from "../SearchMenu/index.vue";
 
-  const loading = ref(true);
+import SiteAnalysis from "../components/SiteAnalysis.vue";
+import VisitSource from "../components/VisitSource.vue";
+import VisitRadar from "../components/VisitRadar.vue";
+import SalesProductPie from "../components/SalesProductPie.vue";
 
-  setTimeout(() => {
-    loading.value = false;
-  }, 500);
+const loading = ref(true);
+
+setTimeout(() => {
+  loading.value = false;
+}, 500);
 </script>
