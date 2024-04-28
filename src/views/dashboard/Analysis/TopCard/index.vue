@@ -1,11 +1,11 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div>
-    <a-row :gutter="0">
+    <a-row :gutter="0" class="row">
       <a-col :span="6">
         <a-card :bordered="false" :loading="loading" class="top">
           <a-row>
-            <a-col class="top-left" :span="12"><Image :src="summary.icon" /></a-col>
+            <a-col class="top-left" :span="12"><img :src="summary.icon" /></a-col>
             <a-col class="top-right" :span="12">
               <div>{{ summary.title }}</div>
               <div>
@@ -27,7 +27,7 @@
       <a-col :span="6" v-for="item in profileList" :key="item.title">
         <a-card class="top">
           <a-row>
-            <a-col :span="12" class="top-left"><Image :src="item.icon" /></a-col>
+            <a-col :span="12" class="top-left"><img :src="item.icon" /></a-col>
             <a-col :span="12" class="top-right1">
               <div>
                 <span>{{ item.title }}</span>
@@ -42,54 +42,60 @@
 </template>
 
 <script lang="ts" setup>
-import { Card, Image } from "ant-design-vue";
-import { profileList, summary } from "./index.js";
+  import { Card } from "ant-design-vue";
+  import { profileList, summary } from "./index.js";
 
-defineProps({
-  loading: {
-    type: Boolean,
-  },
-});
+  defineProps({
+    loading: {
+      type: Boolean,
+    },
+  });
 </script>
 
 <style lang="less" scoped>
-@fontsize: 10px;
+  @fontsize: 10px;
 
-.top {
-  display: flex;
-  height: 125px;
-  //   margin-bottom: 15px;
-  align-items: center;
-  font-size: @fontsize;
-
-  .top-left {
-    width: 130px;
-  }
-
-  .top-right1 {
-    font-size: @fontsize;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .top-right {
-    font-size: @fontsize;
+  .row {
+    box-shadow: 1px 1px 5px #ccc;
+    border-radius: 8px;
     margin: auto;
-    display: block;
+  }
 
-    .warn {
-      color: red;
-    }
-  }
-  .top-right1 {
-    font-size: @fontsize;
-    align-items: center;
-    justify-content: center;
+  .top {
     display: flex;
-    .msg {
-      font-size: 20px;
-      font-weight: 600;
+    height: 150px;
+    //   margin-bottom: 15px;
+    align-items: center;
+    font-size: @fontsize;
+
+    .top-left {
+      width: 130px;
+    }
+
+    .top-right1 {
+      font-size: @fontsize;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .top-right {
+      font-size: @fontsize;
+      margin: auto;
+      display: block;
+
+      .warn {
+        color: red;
+      }
+    }
+    .top-right1 {
+      font-size: @fontsize;
+      align-items: center;
+      justify-content: center;
+      display: flex;
+      .msg {
+        font-size: 20px;
+        font-weight: 600;
+      }
     }
   }
-}
 </style>
