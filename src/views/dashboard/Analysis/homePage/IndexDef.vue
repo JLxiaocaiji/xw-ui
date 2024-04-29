@@ -21,7 +21,7 @@
   //   import GrowCard from '../components/GrowCard.vue';
   import TopCard from "../TopCard/index.vue";
   import SearchMenu from "../SearchMenu/index.vue";
-  import Monitor from "../Monitor/index.vue";
+  import Monitor from "../RightContent/index.vue";
 
   import SiteAnalysis from "../components/SiteAnalysis.vue";
   import VisitSource from "../components/VisitSource.vue";
