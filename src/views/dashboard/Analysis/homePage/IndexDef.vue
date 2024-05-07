@@ -3,9 +3,14 @@
     <!-- <GrowCard :loading="loading" class="enter-y" /> -->
 
     <a-row :gutter="16">
-      <a-col :span="18"> <TopCard /> <SearchMenu /></a-col>
+      <a-col :span="18">
+        <TopCard />
+        <SearchMenu />
+      </a-col>
 
-      <a-col :span="6"><Monitor /></a-col>
+      <a-col :span="6">
+        <Monitor />
+      </a-col>
     </a-row>
 
     <SiteAnalysis class="!my-4 enter-y" :loading="loading" />
