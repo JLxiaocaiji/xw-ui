@@ -4,8 +4,10 @@
     <BasicTable @register="registerTable" :rowSelection="rowSelection">
       <!--插槽:table标题-->
       <template #tableTitle>
-        <a-button type="primary" preIcon="ant-design:plus-outlined" @click="handleCreate"> 新增</a-button>
-        <a-button type="primary" preIcon="ant-design:export-outlined" @click="onExportXls" :disabled="isDisabledAuth('system:user:export')"> 导出</a-button>
+        <a-button type="primary" preIcon="ant-design:plus-outlined" @click="handleCreate">新增</a-button>
+        <a-button type="primary" preIcon="ant-design:export-outlined" @click="onExportXls" :disabled="isDisabledAuth('system:user:export')">
+          导出</a-button
+        >
         <j-upload-button type="primary" preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
         <a-button type="primary" @click="openModal(true, {})" preIcon="ant-design:hdd-outlined"> 回收站</a-button>
         <a-dropdown v-if="selectedRowKeys.length > 0">
@@ -53,22 +55,22 @@
 
 <script lang="ts" name="system-user" setup>
   //ts语法
-  import { ref, computed, unref } from 'vue';
-  import { BasicTable, TableAction, ActionItem } from '/@/components/Table';
-  import UserDrawer from './UserDrawer.vue';
-  import UserRecycleBinModal from './UserRecycleBinModal.vue';
-  import PasswordModal from './PasswordModal.vue';
-  import UserAgentModal from './UserAgentModal.vue';
-  import JThirdAppButton from '/@/components/jeecg/thirdApp/JThirdAppButton.vue';
-  import UserQuitAgentModal from './UserQuitAgentModal.vue';
-  import UserQuitModal from './UserQuitModal.vue';
-  import { useDrawer } from '/@/components/Drawer';
-  import { useListPage } from '/@/hooks/system/useListPage';
-  import { useModal } from '/@/components/Modal';
-  import { useMessage } from '/@/hooks/web/useMessage';
-  import { columns, searchFormSchema } from './user.data';
-  import { listNoCareTenant, deleteUser, batchDeleteUser, getImportUrl, getExportUrl, frozenBatch } from './user.api';
-  import {usePermission} from "/@/hooks/web/usePermission";
+  import { ref, computed, unref } from "vue";
+  import { BasicTable, TableAction, ActionItem } from "/@/components/Table";
+  import UserDrawer from "./UserDrawer.vue";
+  import UserRecycleBinModal from "./UserRecycleBinModal.vue";
+  import PasswordModal from "./PasswordModal.vue";
+  import UserAgentModal from "./UserAgentModal.vue";
+  import JThirdAppButton from "/@/components/jeecg/thirdApp/JThirdAppButton.vue";
+  import UserQuitAgentModal from "./UserQuitAgentModal.vue";
+  import UserQuitModal from "./UserQuitModal.vue";
+  import { useDrawer } from "/@/components/Drawer";
+  import { useListPage } from "/@/hooks/system/useListPage";
+  import { useModal } from "/@/components/Modal";
+  import { useMessage } from "/@/hooks/web/useMessage";
+  import { columns, searchFormSchema } from "./user.data";
+  import { listNoCareTenant, deleteUser, batchDeleteUser, getImportUrl, getExportUrl, frozenBatch } from "./user.api";
+  import { usePermission } from "/@/hooks/web/usePermission";
 
   const { createMessage, createConfirm } = useMessage();
   const { isDisabledAuth } = usePermission();
@@ -87,12 +89,13 @@
 
   // 列表页面公共参数、方法
   const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
-    designScope: 'user-list',
+    designScope: "user-list",
     tableProps: {
-      title: '用户列表',
+      title: "用户列表",
       api: listNoCareTenant,
+      // table 列
       columns: columns,
-      size: 'small',
+      size: "small",
       formConfig: {
         // labelWidth: 200,
         schemas: searchFormSchema,
@@ -101,11 +104,11 @@
         width: 120,
       },
       beforeFetch: (params) => {
-        return Object.assign({ column: 'createTime', order: 'desc' }, params);
+        return Object.assign({ column: "createTime", order: "desc" }, params);
       },
     },
     exportConfig: {
-      name: '用户列表',
+      name: "用户列表",
       url: getExportUrl,
     },
     importConfig: {
@@ -152,8 +155,8 @@
    * 删除事件
    */
   async function handleDelete(record) {
-    if ('admin' == record.username) {
-      createMessage.warning('管理员账号不允许此操作！');
+    if ("admin" == record.username) {
+      createMessage.warning("管理员账号不允许此操作！");
       return;
     }
     await deleteUser({ id: record.id }, reload);
@@ -162,9 +165,9 @@
    * 批量删除事件
    */
   async function batchHandleDelete() {
-    let hasAdmin = unref(selectedRows).filter((item) => item.username == 'admin');
+    let hasAdmin = unref(selectedRows).filter((item) => item.username == "admin");
     if (unref(hasAdmin).length > 0) {
-      createMessage.warning('管理员账号不允许此操作！');
+      createMessage.warning("管理员账号不允许此操作！");
       return;
     }
     await batchDeleteUser({ ids: selectedRowKeys.value }, () => {
@@ -195,8 +198,8 @@
    * 冻结解冻
    */
   async function handleFrozen(record, status) {
-    if ('admin' == record.username) {
-      createMessage.warning('管理员账号不允许此操作！');
+    if ("admin" == record.username) {
+      createMessage.warning("管理员账号不允许此操作！");
       return;
     }
     await frozenBatch({ ids: record.id, status: status }, reload);
@@ -205,17 +208,17 @@
    * 批量冻结解冻
    */
   function batchFrozen(status) {
-    let hasAdmin = selectedRows.value.filter((item) => item.username == 'admin');
+    let hasAdmin = selectedRows.value.filter((item) => item.username == "admin");
     if (unref(hasAdmin).length > 0) {
-      createMessage.warning('管理员账号不允许此操作！');
+      createMessage.warning("管理员账号不允许此操作！");
       return;
     }
     createConfirm({
-      iconType: 'warning',
-      title: '确认操作',
-      content: '是否' + (status == 1 ? '解冻' : '冻结') + '选中账号?',
+      iconType: "warning",
+      title: "确认操作",
+      content: "是否" + (status == 1 ? "解冻" : "冻结") + "选中账号?",
       onOk: async () => {
-        await frozenBatch({ ids: unref(selectedRowKeys).join(','), status: status }, reload);
+        await frozenBatch({ ids: unref(selectedRowKeys).join(","), status: status }, reload);
       },
     });
   }
@@ -236,7 +239,7 @@
   function getTableAction(record): ActionItem[] {
     return [
       {
-        label: '编辑',
+        label: "编辑",
         onClick: handleEdit.bind(null, record),
         // ifShow: () => hasPermission('system:user:edit'),
       },
@@ -248,39 +251,39 @@
   function getDropDownAction(record): ActionItem[] {
     return [
       {
-        label: '详情',
+        label: "详情",
         onClick: handleDetail.bind(null, record),
       },
       {
-        label: '密码',
+        label: "密码",
         //auth: 'user:changepwd',
         onClick: handleChangePassword.bind(null, record.username),
       },
       {
-        label: '删除',
+        label: "删除",
         popConfirm: {
-          title: '是否确认删除',
+          title: "是否确认删除",
           confirm: handleDelete.bind(null, record),
         },
       },
       {
-        label: '冻结',
+        label: "冻结",
         ifShow: record.status == 1,
         popConfirm: {
-          title: '确定冻结吗?',
+          title: "确定冻结吗?",
           confirm: handleFrozen.bind(null, record, 2),
         },
       },
       {
-        label: '解冻',
+        label: "解冻",
         ifShow: record.status == 2,
         popConfirm: {
-          title: '确定解冻吗?',
+          title: "确定解冻吗?",
           confirm: handleFrozen.bind(null, record, 1),
         },
       },
       {
-        label: '代理人',
+        label: "代理人",
         onClick: handleAgentSettings.bind(null, record.username),
       },
     ];

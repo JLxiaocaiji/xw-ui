@@ -30,14 +30,14 @@
   </div>
 </template>
 <script lang="ts" name="system-menu" setup>
-  import { nextTick, ref } from 'vue';
-  import { BasicTable, useTable, TableAction } from '/@/components/Table';
-  import { useListPage } from '/@/hooks/system/useListPage';
-  import { useDrawer } from '/@/components/Drawer';
-  import MenuDrawer from './MenuDrawer.vue';
-  import DataRuleList from './DataRuleList.vue';
-  import { columns,searchFormSchema } from './menu.data';
-  import { list, deleteMenu, batchDeleteMenu } from './menu.api';
+  import { nextTick, ref } from "vue";
+  import { BasicTable, useTable, TableAction } from "/@/components/Table";
+  import { useListPage } from "/@/hooks/system/useListPage";
+  import { useDrawer } from "/@/components/Drawer";
+  import MenuDrawer from "./MenuDrawer.vue";
+  import DataRuleList from "./DataRuleList.vue";
+  import { columns, searchFormSchema } from "./menu.data";
+  import { list, deleteMenu, batchDeleteMenu } from "./menu.api";
   import { useDefIndexStore } from "@/store/modules/defIndex";
   import { useI18n } from "/@/hooks/web/useI18n";
 
@@ -48,26 +48,26 @@
   const { t } = useI18n();
 
   // 自定义菜单名称列渲染
-  columns[0].customRender = function ({text, record}) {
-    const isDefIndex = checkDefIndex(record)
+  columns[0].customRender = function ({ text, record }) {
+    const isDefIndex = checkDefIndex(record);
     if (isDefIndex) {
-      text += '（默认首页）'
+      text += "（默认首页）";
     }
     // update-begin--author:liaozhiyang---date:20240306---for：【QQYUN-8379】菜单管理页菜单国际化
     if (text.includes("t('") && t) {
-      return new Function('t', `return ${text}`)(t);
+      return new Function("t", `return ${text}`)(t);
     }
     // update-end--author:liaozhiyang---date:20240306---for：【QQYUN-8379】菜单管理页菜单国际化
-    return text
-  }
+    return text;
+  };
 
   // 列表页面公共参数、方法
   const { prefixCls, tableContext } = useListPage({
     tableProps: {
-      title: '菜单列表',
+      title: "菜单列表",
       api: list,
       columns: columns,
-      size: 'small',
+      size: "small",
       pagination: false,
       isTreeTable: true,
       striped: true,
@@ -78,7 +78,7 @@
       tableSetting: { fullScreen: true },
       formConfig: {
         // update-begin--author:liaozhiyang---date:20230803---for：【QQYUN-5873】查询区域lablel默认居左
-        labelWidth:60,
+        labelWidth: 60,
         owProps: { gutter: 24 },
         // update-end--author:liaozhiyang---date:20230803---for：【QQYUN-5873】查询区域lablel默认居左
         schemas: searchFormSchema,
@@ -98,7 +98,7 @@
    * 选择列配置
    */
   const rowSelection = {
-    type: 'checkbox',
+    type: "checkbox",
     columnWidth: 30,
     selectedRowKeys: checkedKeys,
     onChange: onSelectChange,
@@ -184,11 +184,11 @@
 
   // --------------- begin 默认首页配置 ------------
 
-  const defIndexStore = useDefIndexStore()
+  const defIndexStore = useDefIndexStore();
 
   // 设置默认主页
   async function handleSetDefIndex(record: Recordable) {
-    defIndexStore.update(record.url, record.component, record.route)
+    defIndexStore.update(record.url, record.component, record.route);
   }
 
   /**
@@ -196,7 +196,7 @@
    * @param record
    */
   function checkDefIndex(record: Recordable) {
-    return defIndexStore.check(record.url)
+    return defIndexStore.check(record.url);
   }
 
   // 重新加载默认首页配置
@@ -204,11 +204,11 @@
     try {
       defIndexStore.query();
     } catch (e) {
-      console.error(e)
+      console.error(e);
     }
   }
 
-  reloadDefIndex()
+  reloadDefIndex();
 
   // --------------- end 默认首页配置 ------------
 
@@ -218,7 +218,7 @@
   function getTableAction(record) {
     return [
       {
-        label: '编辑',
+        label: "编辑",
         onClick: handleEdit.bind(null, record),
       },
     ];
@@ -234,23 +234,23 @@
       //   onClick: handleDetail.bind(null, record),
       // },
       {
-        label: '添加下级',
+        label: "添加下级",
         onClick: handleAddSub.bind(null, record),
       },
       {
-        label: '数据规则',
+        label: "数据规则",
         onClick: handleDataRule.bind(null, record),
       },
       {
-        label: '设为默认首页',
+        label: "设为默认首页",
         onClick: handleSetDefIndex.bind(null, record),
         ifShow: () => !record.internalOrExternal && record.component && !checkDefIndex(record),
       },
       {
-        label: '删除',
-        color: 'error',
+        label: "删除",
+        color: "error",
         popConfirm: {
-          title: '是否确认删除',
+          title: "是否确认删除",
           confirm: handleDelete.bind(null, record),
         },
       },

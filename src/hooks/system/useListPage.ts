@@ -1,13 +1,13 @@
-import { reactive, ref, Ref, unref } from 'vue';
-import { merge } from 'lodash-es';
-import { DynamicProps } from '/#/utils';
-import { BasicTableProps, TableActionType, useTable } from '/@/components/Table';
-import { ColEx } from '/@/components/Form/src/types';
-import { FormActionType } from '/@/components/Form';
-import { useMessage } from '/@/hooks/web/useMessage';
-import { useMethods } from '/@/hooks/system/useMethods';
-import { useDesign } from '/@/hooks/web/useDesign';
-import { filterObj } from '/@/utils/common/compUtils';
+import { reactive, ref, Ref, unref } from "vue";
+import { merge } from "lodash-es";
+import { DynamicProps } from "/#/utils";
+import { BasicTableProps, TableActionType, useTable } from "/@/components/Table";
+import { ColEx } from "/@/components/Form/src/types";
+import { FormActionType } from "/@/components/Form";
+import { useMessage } from "/@/hooks/web/useMessage";
+import { useMethods } from "/@/hooks/system/useMethods";
+import { useDesign } from "/@/hooks/web/useDesign";
+import { filterObj } from "/@/utils/common/compUtils";
 const { handleExportXls, handleImportXls } = useMethods();
 
 // 定义 useListPage 方法所需参数
@@ -65,24 +65,24 @@ export function useListPage(options: ListPageOptions) {
   async function onExportXls() {
     //update-begin---author:wangshuai ---date:20220411  for：导出新增自定义参数------------
     let { url, name, params } = options?.exportConfig ?? {};
-    let realUrl = typeof url === 'function' ? url() : url;
+    let realUrl = typeof url === "function" ? url() : url;
     if (realUrl) {
-      let title = typeof name === 'function' ? name() : name;
+      let title = typeof name === "function" ? name() : name;
       //update-begin-author:taoyan date:20220507 for: erp代码生成 子表 导出报错，原因未知-
-      let paramsForm:any = {};
+      let paramsForm: any = {};
       try {
         paramsForm = await getForm().validate();
       } catch (e) {
         console.error(e);
       }
       //update-end-author:taoyan date:20220507 for: erp代码生成 子表 导出报错，原因未知-
-      
+
       //update-begin-author:liusq date:20230410 for:[/issues/409]导出功能没有按排序结果导出,设置导出默认排序，创建时间倒序
-      if(!paramsForm?.column){
-         Object.assign(paramsForm,{column:'createTime',order:'desc'});
+      if (!paramsForm?.column) {
+        Object.assign(paramsForm, { column: "createTime", order: "desc" });
       }
       //update-begin-author:liusq date:20230410 for: [/issues/409]导出功能没有按排序结果导出,设置导出默认排序，创建时间倒序
-      
+
       //如果参数不为空，则整合到一起
       //update-begin-author:taoyan date:20220507 for: erp代码生成 子表 导出动态设置mainId
       if (params) {
@@ -95,13 +95,12 @@ export function useListPage(options: ListPageOptions) {
       }
       //update-end-author:taoyan date:20220507 for: erp代码生成 子表 导出动态设置mainId
       if (selectedRowKeys.value && selectedRowKeys.value.length > 0) {
-        paramsForm['selections'] = selectedRowKeys.value.join(',');
+        paramsForm["selections"] = selectedRowKeys.value.join(",");
       }
-      console.log()
       return handleExportXls(title as string, realUrl, filterObj(paramsForm));
       //update-end---author:wangshuai ---date:20220411  for：导出新增自定义参数--------------
     } else {
-      $message.createMessage.warn('没有传递 exportConfig.url 参数');
+      $message.createMessage.warn("没有传递 exportConfig.url 参数");
       return Promise.reject();
     }
   }
@@ -110,12 +109,12 @@ export function useListPage(options: ListPageOptions) {
   function onImportXls(file) {
     let { url, success } = options?.importConfig ?? {};
     //update-begin-author:taoyan date:20220507 for: erp代码生成 子表 导入地址是动态的
-    let realUrl = typeof url === 'function' ? url() : url;
+    let realUrl = typeof url === "function" ? url() : url;
     if (realUrl) {
       return handleImportXls(file, realUrl, success || reload);
       //update-end-author:taoyan date:20220507 for: erp代码生成 子表 导入地址是动态的
     } else {
-      $message.createMessage.warn('没有传递 importConfig.url 参数');
+      $message.createMessage.warn("没有传递 importConfig.url 参数");
       return Promise.reject();
     }
   }
@@ -126,6 +125,8 @@ export function useListPage(options: ListPageOptions) {
    * @param options 是否显示确认框
    */
   function doRequest(api: () => Promise<any>, options?: IDoRequestOptions) {
+    console.log(111111)
+    console.log(options)
     return new Promise((resolve, reject) => {
       const execute = async () => {
         try {
@@ -146,9 +147,9 @@ export function useListPage(options: ListPageOptions) {
       };
       if (options?.confirm ?? true) {
         $message.createConfirm({
-          iconType: 'warning',
-          title: '删除',
-          content: '确定要删除吗？',
+          iconType: "warning",
+          title: "删除",
+          content: "确定要删除吗？",
           onOk: () => execute(),
           onCancel: () => reject(),
         });
@@ -194,7 +195,7 @@ export function useListTable(tableProps: TableProps): [
     rowSelection: any;
     selectedRows: Ref<Recordable[]>;
     selectedRowKeys: Ref<any[]>;
-  }
+  },
 ] {
   // 自适应列配置
   const adaptiveColProps: Partial<ColEx> = {
@@ -206,7 +207,7 @@ export function useListTable(tableProps: TableProps): [
     xxl: 6, // ≥1600px
   };
   const defaultTableProps: TableProps = {
-    rowKey: 'id',
+    rowKey: "id",
     // 使用查询条件区域
     useSearchForm: true,
     // 查询条件区域配置
@@ -234,13 +235,15 @@ export function useListTable(tableProps: TableProps): [
       wrapperCol: {},
       // 是否显示 展开/收起 按钮
       showAdvancedButton: true,
-      // 超过指定列数默认折叠
-      autoAdvancedCol: 3,
+      // 超过指定列数默认折叠, 控制 form 筛选数
+      autoAdvancedCol: 5,
       // 操作按钮配置
       actionColOptions: {
         ...adaptiveColProps,
-        style: { textAlign: 'left' },
+        style: { textAlign: "left" },
       },
+      // 是否显示操作按钮
+      //   showActionButtonGroup: false,
     },
     // 斑马纹
     striped: false,
@@ -265,11 +268,11 @@ export function useListTable(tableProps: TableProps): [
     // 操作列
     actionColumn: {
       width: 120,
-      title: '操作',
+      title: "操作",
       //是否锁定操作列取值 right ,left,false
       fixed: false,
-      dataIndex: 'action',
-      slots: { customRender: 'action' },
+      dataIndex: "action",
+      slots: { customRender: "action" },
     },
   };
   // 合并用户个性化配置
@@ -281,12 +284,12 @@ export function useListTable(tableProps: TableProps): [
   // 发送请求之前调用的方法
   function beforeFetch(params) {
     // 默认以 createTime 降序排序
-    return Object.assign({ column: 'createTime', order: 'desc' }, params);
+    return Object.assign({ column: "createTime", order: "desc" }, params);
   }
 
   // 合并方法
   Object.assign(defaultTableProps, { beforeFetch });
-  if (typeof tableProps.beforeFetch === 'function') {
+  if (typeof tableProps.beforeFetch === "function") {
     defaultTableProps.beforeFetch = function (params) {
       params = beforeFetch(params);
       // @ts-ignore
@@ -304,7 +307,7 @@ export function useListTable(tableProps: TableProps): [
   const rowSelection: any = tableProps?.rowSelection ?? {};
   const defaultRowSelection = reactive({
     ...rowSelection,
-    type: rowSelection.type ?? 'checkbox',
+    type: rowSelection.type ?? "checkbox",
     // 选择列宽度，默认 50
     columnWidth: rowSelection.columnWidth ?? 50,
     selectedRows: selectedRows,
@@ -312,7 +315,7 @@ export function useListTable(tableProps: TableProps): [
     onChange(...args) {
       selectedRowKeys.value = args[0];
       selectedRows.value = args[1];
-      if (typeof rowSelection.onChange === 'function') {
+      if (typeof rowSelection.onChange === "function") {
         rowSelection.onChange(...args);
       }
     },

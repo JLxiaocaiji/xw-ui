@@ -56,17 +56,17 @@
   </template>
 </template>
 <script lang="ts">
-  import { defineComponent, PropType, ref, reactive, watchEffect, computed, unref, watch, onMounted, nextTick } from 'vue';
-  import { propTypes } from '/@/utils/propTypes';
-  import { useAttrs } from '/@/hooks/core/useAttrs';
-  import { initDictOptions } from '/@/utils/dict';
-  import { get, omit } from 'lodash-es';
-  import { useRuleFormItem } from '/@/hooks/component/useFormItem';
-  import { CompTypeEnum } from '/@/enums/CompTypeEnum';
-  import { LoadingOutlined } from '@ant-design/icons-vue';
+  import { defineComponent, PropType, ref, reactive, watchEffect, computed, unref, watch, onMounted, nextTick } from "vue";
+  import { propTypes } from "/@/utils/propTypes";
+  import { useAttrs } from "/@/hooks/core/useAttrs";
+  import { initDictOptions } from "/@/utils/dict";
+  import { get, omit } from "lodash-es";
+  import { useRuleFormItem } from "/@/hooks/component/useFormItem";
+  import { CompTypeEnum } from "/@/enums/CompTypeEnum";
+  import { LoadingOutlined } from "@ant-design/icons-vue";
 
   export default defineComponent({
-    name: 'JDictSelectTag',
+    name: "JDictSelectTag",
     inheritAttrs: false,
     components: { LoadingOutlined },
     props: {
@@ -90,11 +90,11 @@
       },
       style: propTypes.any,
     },
-    emits: ['options-change', 'change','update:value'],
+    emits: ["options-change", "change", "update:value"],
     setup(props, { emit, refs }) {
       const dictOptions = ref<any[]>([]);
       const attrs = useAttrs();
-      const [state, , , formItemContext] = useRuleFormItem(props, 'value', 'change');
+      const [state, , , formItemContext] = useRuleFormItem(props, "value", "change");
       const getBindValue = Object.assign({}, unref(props), unref(attrs));
       // 是否正在加载回显数据
       const loadingEcho = ref<boolean>(false);
@@ -103,7 +103,7 @@
 
       //组件类型
       const compType = computed(() => {
-        return !props.type || props.type === 'list' ? 'select' : props.type;
+        return !props.type || props.type === "list" ? "select" : props.type;
       });
       /**
        * 监听字典code
@@ -128,8 +128,8 @@
       watch(
         () => props.value,
         () => {
-          if (props.value === '') {
-            emit('change', '');
+          if (props.value === "") {
+            emit("change", "");
             nextTick(() => formItemContext.onFieldChange());
           }
         }
@@ -142,12 +142,12 @@
         const dictData = await initDictOptions(dictCode);
         dictOptions.value = dictData.reduce((prev, next) => {
           if (next) {
-            const value = next['value'];
+            const value = next["value"];
             prev.push({
-              label: next['text'] || next['label'],
+              label: next["text"] || next["label"],
               value: stringToNumber ? +value : value,
-              color: next['color'],
-              ...omit(next, ['text', 'value', 'color']),
+              color: next["color"],
+              ...omit(next, ["text", "value", "color"]),
             });
           }
           return prev;
@@ -156,19 +156,19 @@
 
       function handleChange(e) {
         const { mode } = unref<Recordable>(getBindValue);
-        let changeValue:any;
+        let changeValue: any;
         // 兼容多选模式
-        
+
         //update-begin---author:wangshuai ---date:20230216  for：[QQYUN-4290]公文发文：选择机关代字报错,是因为值改变触发了change事件三次，导致数据发生改变------------
         //采用一个值，不然的话state值变换触发多个change
-        if (mode === 'multiple') {
+        if (mode === "multiple") {
           changeValue = e?.target?.value ?? e;
           // 过滤掉空值
-          if (changeValue == null || changeValue === '') {
+          if (changeValue == null || changeValue === "") {
             changeValue = [];
           }
           if (Array.isArray(changeValue)) {
-            changeValue = changeValue.filter((item) => item != null && item !== '');
+            changeValue = changeValue.filter((item) => item != null && item !== "");
           }
         } else {
           changeValue = e?.target?.value ?? e;
@@ -176,10 +176,10 @@
         state.value = changeValue;
 
         //update-begin---author:wangshuai ---date:20230403  for：【issues/4507】JDictSelectTag组件使用时，浏览器给出警告提示：Expected Function, got Array------------
-        emit('update:value',changeValue)
+        emit("update:value", changeValue);
         //update-end---author:wangshuai ---date:20230403  for：【issues/4507】JDictSelectTag组件使用时，浏览器给出警告提示：Expected Function, got Array述------------
         //update-end---author:wangshuai ---date:20230216  for：[QQYUN-4290]公文发文：选择机关代字报错,是因为值改变触发了change事件三次，导致数据发生改变------------
-        
+
         // nextTick(() => formItemContext.onFieldChange());
       }
 
@@ -187,14 +187,14 @@
       function handleChangeRadio(e) {
         state.value = e?.target?.value ?? e;
         //update-begin---author:wangshuai ---date:20230504  for：【issues/506】JDictSelectTag 组件 type="radio" 没有返回值------------
-        emit('update:value',e?.target?.value ?? e)
+        emit("update:value", e?.target?.value ?? e);
         //update-end---author:wangshuai ---date:20230504  for：【issues/506】JDictSelectTag 组件 type="radio" 没有返回值------------
       }
 
       /** 用于搜索下拉框中的内容 */
       function handleFilterOption(input, option) {
         // update-begin--author:liaozhiyang---date:20230914---for：【QQYUN-6514】 配置的时候，Y轴不能输入多个字段了，控制台报错
-        if (typeof option.children === 'function') {
+        if (typeof option.children === "function") {
           // 在 label 中搜索
           let labelIf = option.children()[0]?.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
           if (labelIf) {
@@ -203,7 +203,7 @@
         }
         // update-end--author:liaozhiyang---date:20230914---for：【QQYUN-6514】 配置的时候，Y轴不能输入多个字段了，控制台报错
         // 在 value 中搜索
-        return (option.value || '').toString().toLowerCase().indexOf(input.toLowerCase()) >= 0;
+        return (option.value || "").toString().toLowerCase().indexOf(input.toLowerCase()) >= 0;
       }
 
       return {
