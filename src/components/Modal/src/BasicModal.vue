@@ -151,6 +151,7 @@
           wrapClassName: unref(getWrapClassName),
         };
         if (unref(fullScreenRef)) {
+          // 删除对象属性
           return omit(attr, ['height', 'title', 'visible']);
         }
         return omit(attr, ['title', 'visible']);

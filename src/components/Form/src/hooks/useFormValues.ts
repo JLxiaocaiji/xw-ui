@@ -37,6 +37,7 @@ export function useFormValues({ defaultValueRef, getSchema, formModel, getProps 
       if (isString(value)) {
         value = value.trim();
       }
+      // 改变值
       set(res, key, value);
     }
     return handleRangeValue(getProps, res);
@@ -54,6 +55,12 @@ export function useFormValues({ defaultValueRef, getSchema, formModel, getProps 
     });
     defaultValueRef.value = obj;
   }
+
+  console.log("aaaaaaaaaaaaaaa")
+  console.log(defaultValueRef)
+  console.log(getSchema)
+  console.log(formModel)
+  console.log(getProps)
 
   return { handleFormValues, initDefault };
 }

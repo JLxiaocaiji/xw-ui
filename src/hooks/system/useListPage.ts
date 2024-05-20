@@ -58,6 +58,8 @@ export function useListPage(options: ListPageOptions) {
   }
 
   const tableContext = useListTable(options.tableProps);
+  console.log(11111)
+  console.log(tableContext )
 
   const [, { getForm, reload, setLoading }, { selectedRowKeys }] = tableContext;
 
@@ -125,8 +127,6 @@ export function useListPage(options: ListPageOptions) {
    * @param options 是否显示确认框
    */
   function doRequest(api: () => Promise<any>, options?: IDoRequestOptions) {
-    console.log(111111)
-    console.log(options)
     return new Promise((resolve, reject) => {
       const execute = async () => {
         try {
@@ -236,7 +236,7 @@ export function useListTable(tableProps: TableProps): [
       // 是否显示 展开/收起 按钮
       showAdvancedButton: true,
       // 超过指定列数默认折叠, 控制 form 筛选数
-      autoAdvancedCol: 5,
+      autoAdvancedCol: 3,
       // 操作按钮配置
       actionColOptions: {
         ...adaptiveColProps,
@@ -280,7 +280,6 @@ export function useListTable(tableProps: TableProps): [
     // merge 方法可深度合并对象
     merge(defaultTableProps, tableProps);
   }
-
   // 发送请求之前调用的方法
   function beforeFetch(params) {
     // 默认以 createTime 降序排序
@@ -322,7 +321,11 @@ export function useListTable(tableProps: TableProps): [
   });
   delete defaultTableProps.rowSelection;
 
+  console.log(1111)
+  console.log(...useTable(defaultTableProps))
+
   return [
+    // tableContext 数组的前 2 项
     ...useTable(defaultTableProps),
     {
       selectedRows,

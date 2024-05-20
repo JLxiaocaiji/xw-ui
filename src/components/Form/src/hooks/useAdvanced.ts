@@ -1,11 +1,11 @@
-import type { ColEx } from '../types';
-import type { AdvanceState } from '../types/hooks';
-import type { ComputedRef, Ref } from 'vue';
-import type { FormProps, FormSchema } from '../types/form';
-import { computed, unref, watch } from 'vue';
-import { isBoolean, isFunction, isNumber, isObject } from '/@/utils/is';
-import { useBreakpoint } from '/@/hooks/event/useBreakpoint';
-import { useDebounceFn } from '@vueuse/core';
+import type { ColEx } from "../types";
+import type { AdvanceState } from "../types/hooks";
+import type { ComputedRef, Ref } from "vue";
+import type { FormProps, FormSchema } from "../types/form";
+import { computed, unref, watch } from "vue";
+import { isBoolean, isFunction, isNumber, isObject } from "/@/utils/is";
+import { useBreakpoint } from "/@/hooks/event/useBreakpoint";
+import { useDebounceFn } from "@vueuse/core";
 
 const BASIC_COL_LEN = 24;
 
@@ -41,6 +41,7 @@ export default function ({ advanceState, emit, getProps, getSchema, formModel, d
     return 0;
   });
 
+  // 防抖
   const debounceUpdateAdvanced = useDebounceFn(updateAdvanced, 30);
 
   watch(
@@ -153,9 +154,10 @@ export default function ({ advanceState, emit, getProps, getSchema, formModel, d
 
     getAdvanced(unref(getProps).actionColOptions || { span: BASIC_COL_LEN }, itemColSum, true);
 
-    emit('advanced-change');
+    emit("advanced-change");
   }
 
+  // form
   function handleToggleAdvanced() {
     advanceState.isAdvanced = !advanceState.isAdvanced;
   }

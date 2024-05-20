@@ -1,10 +1,11 @@
-import { Slots } from 'vue';
-import { isFunction } from '/@/utils/is';
+import { Slots } from "vue";
+import { isFunction } from "/@/utils/is";
 
 /**
  * @description:  Get slot to prevent empty error
  */
-export function getSlot(slots: Slots, slot = 'default', data?: any) {
+export function getSlot(slots: Slots, slot = "default", data?: any) {
+  // slots 为空 或 slots 中不包含 slot
   if (!slots || !Reflect.has(slots, slot)) {
     return null;
   }

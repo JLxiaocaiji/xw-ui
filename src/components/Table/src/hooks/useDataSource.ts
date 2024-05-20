@@ -36,12 +36,18 @@ export function useDataSource(
 
   watchEffect(() => {
     tableData.value = unref(dataSourceRef);
+    console.log(999)
+    console.log(dataSourceRef)
   });
 
   watch(
     () => unref(propsRef).dataSource,
     () => {
       const { dataSource, api } = unref(propsRef);
+      console.log(8888)
+      console.log(dataSource)
+      console.log(api)
+      // api 不存在但有dataSource，将 dataSource 赋值给 dataSourceRef.value
       !api && dataSource && (dataSourceRef.value = dataSource);
     },
     {

@@ -3,30 +3,30 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, PropType, ref, watchEffect, unref, watch, computed } from 'vue';
-  import { useAttrs } from '/@/hooks/core/useAttrs';
-  import { propTypes } from '/@/utils/propTypes';
-  import { JInputTypeEnum } from '/@/enums/jeecgEnum.ts';
-  import { omit } from 'lodash-es';
+  import { defineComponent, PropType, ref, watchEffect, unref, watch, computed } from "vue";
+  import { useAttrs } from "/@/hooks/core/useAttrs";
+  import { propTypes } from "/@/utils/propTypes";
+  import { JInputTypeEnum } from "/@/enums/jeecgEnum.ts";
+  import { omit } from "lodash-es";
 
   export default defineComponent({
-    name: 'JInput',
+    name: "JInput",
     inheritAttrs: false,
     props: {
-      value: propTypes.string.def(''),
+      value: propTypes.string.def(""),
       type: propTypes.string.def(JInputTypeEnum.JINPUT_QUERY_LIKE),
-      placeholder: propTypes.string.def(''),
+      placeholder: propTypes.string.def(""),
       trim: propTypes.bool.def(false),
     },
-    emits: ['change', 'update:value'],
+    emits: ["change", "update:value"],
     setup(props, { emit }) {
       const attrs = useAttrs();
       //表单值
-      const showText = ref('');
+      const showText = ref("");
       // update-begin--author:liaozhiyang---date:20231026---for：【issues/803】JIput updateSchema不生效
       //绑定属性
       const getBindValue = computed(() => {
-        return omit(Object.assign({}, unref(props), unref(attrs)), ['value']);
+        return omit(Object.assign({}, unref(props), unref(attrs)), ["value"]);
       });
       // update-end--author:liaozhiyang---date:20231026---for：【issues/803】JIput updateSchema不生效
       //监听类型变化
@@ -49,14 +49,19 @@
        * 初始化数值
        */
       function initVal() {
+        console.log("props")
+        console.log(props)
+        console.log(props.value)
+        console.log(props.value.indexOf("*"))
+        console.log(props.value.substring(1, props.value.length - 1))
         if (!props.value) {
-          showText.value = '';
+          showText.value = "";
         } else {
           let text = props.value;
           switch (props.type) {
             case JInputTypeEnum.JINPUT_QUERY_LIKE:
               //修复路由传参的值传送到jinput框被前后各截取了一位 #1336
-              if (text.indexOf('*') != -1) {
+              if (text.indexOf("*") != -1) {
                 text = text.substring(1, text.length - 1);
               }
               break;
@@ -79,28 +84,31 @@
        * 返回值
        */
       function backValue(e) {
-        let text = e?.target?.value ?? '';
+        let text = e?.target?.value ?? "";
         if (text && !!props.trim) {
           text = text.trim();
         }
         switch (props.type) {
           case JInputTypeEnum.JINPUT_QUERY_LIKE:
-            text = '*' + text + '*';
+            text = "*" + text + "*";
             break;
           case JInputTypeEnum.JINPUT_QUERY_NE:
-            text = '!' + text;
+            text = "!" + text;
             break;
           case JInputTypeEnum.JINPUT_QUERY_GE:
-            text = '>=' + text;
+            text = ">=" + text;
             break;
           case JInputTypeEnum.JINPUT_QUERY_LE:
-            text = '<=' + text;
+            text = "<=" + text;
             break;
           default:
         }
-        emit('change', text);
-        emit('update:value', text);
+        emit("change", text);
+        emit("update:value", text);
       }
+
+      console.log("showText")
+      console.log(showText)
 
       return { showText, attrs, getBindValue, backValue };
     },

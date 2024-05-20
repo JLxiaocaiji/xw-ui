@@ -4,11 +4,13 @@
       <FormItem>
         <!-- update-begin-author:zyf   Date:20211213  for：调换按钮前后位置-->
         <slot name="submitBefore"></slot>
+        <!-- 查询， submitAction 定义在 BasicForm 中 -->
         <Button type="primary" class="mr-2" v-bind="getSubmitBtnOptions" @click="submitAction" v-if="showSubmitButton">
           {{ getSubmitBtnOptions.text }}
         </Button>
 
         <slot name="resetBefore"></slot>
+        <!-- 重置 -->
         <Button type="default" class="mr-2" v-bind="getResetBtnOptions" @click="resetAction" v-if="showResetButton">
           {{ getResetBtnOptions.text }}
         </Button>
@@ -16,7 +18,8 @@
 
         <slot name="advanceBefore"></slot>
         <Button type="link" size="small" @click="toggleAdvanced" v-if="showAdvancedButton && !hideAdvanceBtn">
-          {{ isAdvanced ? t('component.form.putAway') : t('component.form.unfold') }}
+          <!-- 收起 或 展开 -->
+          {{ isAdvanced ? t("component.form.putAway") : t("component.form.unfold") }}
           <BasicArrow class="ml-1" :expand="!isAdvanced" up />
         </Button>
         <slot name="advanceAfter"></slot>
@@ -25,20 +28,20 @@
   </a-col>
 </template>
 <script lang="ts">
-  import type { ColEx } from '../types/index';
+  import type { ColEx } from "../types/index";
   //import type { ButtonProps } from 'ant-design-vue/es/button/buttonTypes';
-  import { defineComponent, computed, PropType } from 'vue';
-  import { Form, Col } from 'ant-design-vue';
-  import { Button, ButtonProps } from '/@/components/Button';
-  import { BasicArrow } from '/@/components/Basic';
-  import { useFormContext } from '../hooks/useFormContext';
-  import { useI18n } from '/@/hooks/web/useI18n';
-  import { propTypes } from '/@/utils/propTypes';
+  import { defineComponent, computed, PropType } from "vue";
+  import { Form, Col } from "ant-design-vue";
+  import { Button, ButtonProps } from "/@/components/Button";
+  import { BasicArrow } from "/@/components/Basic";
+  import { useFormContext } from "../hooks/useFormContext";
+  import { useI18n } from "/@/hooks/web/useI18n";
+  import { propTypes } from "/@/utils/propTypes";
 
   type ButtonOptions = Partial<ButtonProps> & { text: string };
 
   export default defineComponent({
-    name: 'BasicFormAction',
+    name: "BasicFormAction",
     components: {
       FormItem: Form.Item,
       Button,
@@ -65,9 +68,9 @@
       actionSpan: propTypes.number.def(6),
       isAdvanced: propTypes.bool,
       hideAdvanceBtn: propTypes.bool,
-      layout: propTypes.oneOf(['horizontal', 'vertical', 'inline']).def('horizontal'),
+      layout: propTypes.oneOf(["horizontal", "vertical", "inline"]).def("horizontal"),
     },
-    emits: ['toggle-advanced'],
+    emits: ["toggle-advanced"],
     setup(props, { emit }) {
       const { t } = useI18n();
 
@@ -76,43 +79,43 @@
         const actionSpan = 24 - span;
         const advancedSpanObj = showAdvancedButton ? { span: actionSpan < 6 ? 24 : actionSpan } : {};
         // update-begin--author:liaozhiyang---date:20240105---for：【QQYUN-6566】BasicForm支持一行显示(inline)
-        const defaultSpan = props.layout == 'inline' ? {} : { span: showAdvancedButton ? 6 : 4 };
+        const defaultSpan = props.layout == "inline" ? {} : { span: showAdvancedButton ? 6 : 4 };
         // update-end--author:liaozhiyang---date:20240105---for：【QQYUN-6566】BasicForm支持一行显示(inline)
         const actionColOpt: Partial<ColEx> = {
-          style: { textAlign: 'right' },
+          style: { textAlign: "right" },
           ...defaultSpan,
           ...advancedSpanObj,
           ...actionColOptions,
         };
-        
-        
-        
+
         return actionColOpt;
       });
 
+      // 重置
       const getResetBtnOptions = computed((): ButtonOptions => {
         return Object.assign(
           {
-            text: t('common.resetText'),
-            preIcon: 'ic:baseline-restart-alt',
+            text: t("common.resetText"),
+            preIcon: "ic:baseline-restart-alt",
           },
           props.resetButtonOptions
         );
       });
 
+      //  查询
       const getSubmitBtnOptions = computed(() => {
         return Object.assign(
           {},
           {
-            text: t('common.queryText'),
-            preIcon: 'ant-design:search-outlined',
+            text: t("common.queryText"),
+            preIcon: "ant-design:search-outlined",
           },
           props.submitButtonOptions
         );
       });
 
       function toggleAdvanced() {
-        emit('toggle-advanced');
+        emit("toggle-advanced");
       }
 
       return {

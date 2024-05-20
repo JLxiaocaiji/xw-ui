@@ -65,7 +65,6 @@
           fixed: undefined,
         },
       });
-
       function handleCreate() {
         openModal(true, {
           isUpdate: false,

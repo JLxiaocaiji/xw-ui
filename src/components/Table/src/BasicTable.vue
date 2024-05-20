@@ -14,17 +14,24 @@
       </template>
     </BasicForm>
 
-    <!-- antd v3 升级兼容，阻止数据的收集，防止控制台报错 -->
+    <!-- antd v3 升级兼容， <a-form-item-rest> 阻止数据的收集，防止控制台报错 -->
     <!-- https://antdv.com/docs/vue/migration-v3-cn -->
     <a-form-item-rest>
-      <Table ref="tableElRef" v-bind="getBindValues" :rowClassName="getRowClassName" v-show="getEmptyDataIsShowTable" @resizeColumn="handleResizeColumn" @change="handleTableChange">
+      <Table
+        ref="tableElRef"
+        v-bind="getBindValues"
+        :rowClassName="getRowClassName"
+        v-show="getEmptyDataIsShowTable"
+        @resizeColumn="handleResizeColumn"
+        @change="handleTableChange"
+      >
         <!-- antd的原生插槽直接传递 -->
         <template #[item]="data" v-for="item in slotNamesGroup.native" :key="item">
           <slot :name="item" v-bind="data || {}"></slot>
         </template>
         <template #headerCell="{ column }">
           <!-- update-begin--author:sunjianlei---date:220230630---for：【QQYUN-5571】自封装选择列，解决数据行选择卡顿问题 -->
-          <CustomSelectHeader v-if="isCustomSelection(column)" v-bind="selectHeaderProps"/>
+          <CustomSelectHeader v-if="isCustomSelection(column)" v-bind="selectHeaderProps" />
           <HeaderCell v-else :column="column" />
           <!-- update-end--author:sunjianlei---date:220230630---for：【QQYUN-5571】自封装选择列，解决数据行选择卡顿问题 -->
         </template>
@@ -33,7 +40,7 @@
           <!-- update-begin--author:liaozhiyang---date:220230717---for：【issues-179】antd3 一些警告以及报错(针对表格) -->
           <!-- update-begin--author:liusq---date:20230921---for：【issues/770】slotsBak异常报错的问题,增加判断column是否存在 -->
           <template v-if="data.column?.slotsBak?.customRender">
-          <!-- update-end--author:liusq---date:20230921---for：【issues/770】slotsBak异常报错的问题,增加判断column是否存在 -->
+            <!-- update-end--author:liusq---date:20230921---for：【issues/770】slotsBak异常报错的问题,增加判断column是否存在 -->
             <slot :name="data.column.slotsBak.customRender" v-bind="data || {}"></slot>
           </template>
           <template v-else>
@@ -46,36 +53,36 @@
   </div>
 </template>
 <script lang="ts">
-  import type { BasicTableProps, TableActionType, SizeType, ColumnChangeParam, BasicColumn } from './types/table';
+  import type { BasicTableProps, TableActionType, SizeType, ColumnChangeParam, BasicColumn } from "./types/table";
 
-  import { defineComponent, ref, computed, unref, toRaw, inject, watchEffect, watch, onUnmounted, onMounted, nextTick } from 'vue';
-  import { Table } from 'ant-design-vue';
-  import { BasicForm, useForm } from '/@/components/Form/index';
-  import { PageWrapperFixedHeightKey } from '/@/components/Page/injectionKey';
-  import CustomSelectHeader from './components/CustomSelectHeader.vue'
-  import expandIcon from './components/ExpandIcon';
-  import HeaderCell from './components/HeaderCell.vue';
-  import { InnerHandlers } from './types/table';
-  import { usePagination } from './hooks/usePagination';
-  import { useColumns } from './hooks/useColumns';
-  import { useDataSource } from './hooks/useDataSource';
-  import { useLoading } from './hooks/useLoading';
-  import { useRowSelection } from './hooks/useRowSelection';
-  import { useTableScroll } from './hooks/useTableScroll';
-  import { useCustomRow } from './hooks/useCustomRow';
-  import { useTableStyle } from './hooks/useTableStyle';
-  import { useTableHeader } from './hooks/useTableHeader';
-  import { useTableExpand } from './hooks/useTableExpand';
-  import { createTableContext } from './hooks/useTableContext';
-  import { useTableFooter } from './hooks/useTableFooter';
-  import { useTableForm } from './hooks/useTableForm';
-  import { useDesign } from '/@/hooks/web/useDesign';
+  import { defineComponent, ref, computed, unref, toRaw, inject, watchEffect, watch, onUnmounted, onMounted, nextTick } from "vue";
+  import { Table } from "ant-design-vue";
+  import { BasicForm, useForm } from "/@/components/Form/index";
+  import { PageWrapperFixedHeightKey } from "/@/components/Page/injectionKey";
+  import CustomSelectHeader from "./components/CustomSelectHeader.vue";
+  import expandIcon from "./components/ExpandIcon";
+  import HeaderCell from "./components/HeaderCell.vue";
+  import { InnerHandlers } from "./types/table";
+  import { usePagination } from "./hooks/usePagination";
+  import { useColumns } from "./hooks/useColumns";
+  import { useDataSource } from "./hooks/useDataSource";
+  import { useLoading } from "./hooks/useLoading";
+  import { useRowSelection } from "./hooks/useRowSelection";
+  import { useTableScroll } from "./hooks/useTableScroll";
+  import { useCustomRow } from "./hooks/useCustomRow";
+  import { useTableStyle } from "./hooks/useTableStyle";
+  import { useTableHeader } from "./hooks/useTableHeader";
+  import { useTableExpand } from "./hooks/useTableExpand";
+  import { createTableContext } from "./hooks/useTableContext";
+  import { useTableFooter } from "./hooks/useTableFooter";
+  import { useTableForm } from "./hooks/useTableForm";
+  import { useDesign } from "/@/hooks/web/useDesign";
   import { useCustomSelection } from "./hooks/useCustomSelection";
 
-  import { omit } from 'lodash-es';
-  import { basicProps } from './props';
-  import { isFunction } from '/@/utils/is';
-  import { warn } from '/@/utils/log';
+  import { omit } from "lodash-es";
+  import { basicProps } from "./props";
+  import { isFunction } from "/@/utils/is";
+  import { warn } from "/@/utils/log";
 
   export default defineComponent({
     components: {
@@ -86,23 +93,23 @@
     },
     props: basicProps,
     emits: [
-      'fetch-success',
-      'fetch-error',
-      'selection-change',
-      'register',
-      'row-click',
-      'row-dbClick',
-      'row-contextmenu',
-      'row-mouseenter',
-      'row-mouseleave',
-      'edit-end',
-      'edit-cancel',
-      'edit-row-end',
-      'edit-change',
-      'expanded-rows-change',
-      'change',
-      'columns-change',
-      'table-redo',
+      "fetch-success",
+      "fetch-error",
+      "selection-change",
+      "register",
+      "row-click",
+      "row-dbClick",
+      "row-contextmenu",
+      "row-mouseenter",
+      "row-mouseleave",
+      "edit-end",
+      "edit-cancel",
+      "edit-row-end",
+      "edit-change",
+      "expanded-rows-change",
+      "change",
+      "columns-change",
+      "table-redo",
     ],
     setup(props, { attrs, emit, slots, expose }) {
       const tableElRef = ref(null);
@@ -111,12 +118,16 @@
       const wrapRef = ref(null);
       const innerPropsRef = ref<Partial<BasicTableProps>>();
 
-      const { prefixCls } = useDesign('basic-table');
+      // 样式前缀， basic-table
+      const { prefixCls } = useDesign("basic-table");
       const [registerForm, formActions] = useForm();
 
       const getProps = computed(() => {
         return { ...props, ...unref(innerPropsRef) } as BasicTableProps;
       });
+
+      console.log(7777);
+      console.log(getProps);
 
       const isFixedHeightPage = inject(PageWrapperFixedHeightKey, false);
       watchEffect(() => {
@@ -134,7 +145,7 @@
       //   useRowSelection(getProps, tableData, emit);
 
       // 子级列名
-      const childrenColumnName = computed(() => getProps.value.childrenColumnName || 'children');
+      const childrenColumnName = computed(() => getProps.value.childrenColumnName || "children");
 
       // 自定义选择列
       const {
@@ -149,14 +160,7 @@
         clearSelectedRowKeys,
         deleteSelectRowByKey,
         getExpandIconColumnIndex,
-      } = useCustomSelection(
-        getProps,
-        emit,
-        wrapRef,
-        getPaginationInfo,
-        tableData,
-        childrenColumnName
-      )
+      } = useCustomSelection(getProps, emit, wrapRef, getPaginationInfo, tableData, childrenColumnName);
       // update-end--author:sunjianlei---date:220230630---for：【QQYUN-5571】自封装选择列，解决数据行选择卡顿问题
 
       const {
@@ -189,7 +193,7 @@
 
       function handleTableChange(...args) {
         onTableChange.call(undefined, ...args);
-        emit('change', ...args);
+        emit("change", ...args);
         // 解决通过useTable注册onChange时不起作用的问题
         const { onChange } = unref(getProps);
         onChange && isFunction(onChange) && onChange.call(undefined, ...args);
@@ -199,7 +203,7 @@
         getProps,
         getPaginationInfo,
         // update-begin--author:sunjianlei---date:220230630---for：【QQYUN-5571】自封装选择列，解决数据行选择卡顿问题
-        handleCustomSelectColumn,
+        handleCustomSelectColumn
         // update-end--author:sunjianlei---date:220230630---for：【QQYUN-5571】自封装选择列，解决数据行选择卡顿问题
       );
 
@@ -219,7 +223,7 @@
 
       const handlers: InnerHandlers = {
         onColumnsChange: (data: ColumnChangeParam[]) => {
-          emit('columns-change', data);
+          emit("columns-change", data);
           // support useTable
           unref(getProps).onColumnsChange?.(data);
         },
@@ -243,7 +247,7 @@
           ...unref(getHeaderProps),
           scroll: unref(getScrollRef),
           loading: unref(getLoading),
-          tableLayout: 'fixed',
+          tableLayout: "fixed",
           rowSelection: unref(getRowSelectionRef),
           rowKey: unref(getRowKey),
           columns: toRaw(unref(getViewColumns)),
@@ -260,25 +264,25 @@
         /*if (slots.expandedRowRender) {
           propsData = omit(propsData, 'scroll');
         }*/
-        //update-end---author:wangshuai ---date:20230214  for：[QQYUN-4237]代码生成 内嵌子表模式 没有滚动条------------ 
+        //update-end---author:wangshuai ---date:20230214  for：[QQYUN-4237]代码生成 内嵌子表模式 没有滚动条------------
 
         // update-begin--author:sunjianlei---date:220230630---for：【QQYUN-5571】自封装选择列，解决数据行选择卡顿问题
         // 自定义选择列，需要去掉原生的
-        delete propsData.rowSelection
+        delete propsData.rowSelection;
         // update-end--author:sunjianlei---date:220230630---for：【QQYUN-5571】自封装选择列，解决数据行选择卡顿问题
 
         // update-begin--author:liaozhiyang---date:20230919---for：【QQYUN-6387】展开写法（去掉报错）
         !propsData.isTreeTable && delete propsData.expandIconColumnIndex;
         propsData.expandedRowKeys === null && delete propsData.expandedRowKeys;
         // update-end--author:liaozhiyang---date:20230919---for：【QQYUN-6387】展开写法（去掉报错）
-        propsData = omit(propsData, ['class', 'onChange']);
+        propsData = omit(propsData, ["class", "onChange"]);
         return propsData;
       });
 
       // 统一设置表格列宽度
       const getMaxColumnWidth = computed(() => {
         const values = unref(getBindValues);
-        return values.maxColumnWidth > 0 ? values.maxColumnWidth + 'px' : null;
+        return values.maxColumnWidth > 0 ? values.maxColumnWidth + "px" : null;
       });
 
       const getWrapperClass = computed(() => {
@@ -358,7 +362,7 @@
         const allCustomRender = columns.map<string>((column) => column.slotsBak?.customRender);
         for (const name of Object.keys(slots)) {
           // 过滤特殊的插槽
-          if (['bodyCell'].includes(name)) {
+          if (["bodyCell"].includes(name)) {
             continue;
           }
           if (allCustomRender.includes(name)) {
@@ -373,12 +377,12 @@
       // update-begin--author:liaozhiyang---date:20231226---for：【issues/945】BasicTable组件设置默认展开不生效
       nextTick(() => {
         getProps.value.defaultExpandAllRows && expandAll();
-      })
+      });
       // update-end--author:sunjianlei---date:20231226---for：【issues/945】BasicTable组件设置默认展开不生效
       expose(tableAction);
 
-      emit('register', tableAction, formActions);
-
+      //  分别对应： TableActionType: instance, formInstance: formInstance
+      emit("register", tableAction, formActions);
 
       return {
         tableElRef,
@@ -414,9 +418,9 @@
 <style lang="less">
   @border-color: #cecece4d;
 
-  @prefix-cls: ~'@{namespace}-basic-table';
+  @prefix-cls: ~"@{namespace}-basic-table";
 
-  [data-theme='dark'] {
+  [data-theme="dark"] {
     .ant-table-tbody > tr:hover.ant-table-row-selected > td,
     .ant-table-tbody > tr.ant-table-row-selected td {
       background-color: #262626;

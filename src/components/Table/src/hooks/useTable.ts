@@ -1,12 +1,12 @@
-import type { BasicTableProps, TableActionType, FetchParams, BasicColumn } from '../types/table';
-import type { PaginationProps } from '../types/pagination';
-import type { DynamicProps } from '/#/utils';
-import type { FormActionType } from '/@/components/Form';
-import type { WatchStopHandle } from 'vue';
-import { getDynamicProps } from '/@/utils';
-import { ref, onUnmounted, unref, watch, toRaw } from 'vue';
-import { isProdMode } from '/@/utils/env';
-import { error } from '/@/utils/log';
+import type { BasicTableProps, TableActionType, FetchParams, BasicColumn } from "../types/table";
+import type { PaginationProps } from "../types/pagination";
+import type { DynamicProps } from "/#/utils";
+import type { FormActionType } from "/@/components/Form";
+import type { WatchStopHandle } from "vue";
+import { getDynamicProps } from "/@/utils";
+import { ref, onUnmounted, unref, watch, toRaw } from "vue";
+import { isProdMode } from "/@/utils/env";
+import { error } from "/@/utils/log";
 
 type Props = Partial<DynamicProps<BasicTableProps>>;
 
@@ -18,7 +18,7 @@ export function useTable(tableProps?: Props): [
   (instance: TableActionType, formInstance: UseTableMethod) => void,
   TableActionType & {
     getForm: () => FormActionType;
-  }
+  },
 ] {
   const tableRef = ref<Nullable<TableActionType>>(null);
   const loadedRef = ref<Nullable<boolean>>(false);
@@ -26,17 +26,27 @@ export function useTable(tableProps?: Props): [
 
   let stopWatch: WatchStopHandle;
 
+  // instance, formInstance 是从 BasicTable 中传过来的 tableAction, formActions
+  // 分别从 useTable 或 BasicTable 等..., useForm 中的 methods
   function register(instance: TableActionType, formInstance: UseTableMethod) {
+    // 开发环境 isProdMode()：false
     isProdMode() &&
       onUnmounted(() => {
         tableRef.value = null;
         loadedRef.value = null;
       });
 
+    // 开发环境 false
     if (unref(loadedRef) && isProdMode() && instance === unref(tableRef)) return;
+
+    console.log(3333);
+    console.log(instance);
+    console.log(444);
+    console.log(formInstance);
 
     tableRef.value = instance;
     formRef.value = formInstance;
+    // 合并 props 操作
     tableProps && instance.setProps(getDynamicProps(tableProps));
     loadedRef.value = true;
 
@@ -56,13 +66,15 @@ export function useTable(tableProps?: Props): [
 
   function getTableInstance(): TableActionType {
     const table = unref(tableRef);
+    console.log(5555)
+    console.log(table)
     if (!table) {
-      error('The table instance has not been obtained yet, please make sure the table is presented when performing the table operation!');
+      error("The table instance has not been obtained yet, please make sure the table is presented when performing the table operation!");
     }
     return table as TableActionType;
   }
-  
-  function getTableRef(){
+
+  function getTableRef() {
     return tableRef;
   }
 
@@ -161,7 +173,7 @@ export function useTable(tableProps?: Props): [
     },
     getTableRef: () => {
       return getTableRef();
-    }
+    },
   };
 
   return [register, methods];

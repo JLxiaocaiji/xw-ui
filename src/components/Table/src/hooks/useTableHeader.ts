@@ -5,9 +5,14 @@ import TableHeader from '../components/TableHeader.vue';
 import { isString } from '/@/utils/is';
 import { getSlot } from '/@/utils/helper/tsxHelper';
 
+// 渲染 tableHeader
 export function useTableHeader(propsRef: ComputedRef<BasicTableProps>, slots: Slots, handlers: InnerHandlers) {
   const getHeaderProps = computed((): Recordable => {
     const { title, showTableSetting, titleHelpMessage, tableSetting } = unref(propsRef);
+    console.log(666)
+    console.log(unref(propsRef))
+    console.log(slots)
+    console.log(handlers)
     const hideTitle = !slots.tableTitle && !title && !slots.toolbar && !showTableSetting;
     if (hideTitle && !isString(title)) {
       return {};
@@ -24,6 +29,7 @@ export function useTableHeader(propsRef: ComputedRef<BasicTableProps>, slots: Sl
                 titleHelpMessage,
                 showTableSetting,
                 tableSetting,
+                // 对应 emit('columns-change', data);
                 onColumnsChange: handlers.onColumnsChange,
               } as Recordable,
               {

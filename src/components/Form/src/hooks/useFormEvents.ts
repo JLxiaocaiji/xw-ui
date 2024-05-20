@@ -1,13 +1,13 @@
-import type { ComputedRef, Ref } from 'vue';
-import type { FormProps, FormSchema, FormActionType } from '../types/form';
-import type { NamePath, ValidateOptions } from 'ant-design-vue/lib/form/interface';
-import { unref, toRaw } from 'vue';
-import { isArray, isFunction, isObject, isString } from '/@/utils/is';
-import { deepMerge, getValueType } from '/@/utils';
-import { dateItemType, handleInputNumberValue, handleInputStringValue } from '../helper';
-import { dateUtil } from '/@/utils/dateUtil';
-import { cloneDeep, uniqBy } from 'lodash-es';
-import { error } from '/@/utils/log';
+import type { ComputedRef, Ref } from "vue";
+import type { FormProps, FormSchema, FormActionType } from "../types/form";
+import type { NamePath, ValidateOptions } from "ant-design-vue/lib/form/interface";
+import { unref, toRaw } from "vue";
+import { isArray, isFunction, isObject, isString } from "/@/utils/is";
+import { deepMerge, getValueType } from "/@/utils";
+import { dateItemType, handleInputNumberValue, handleInputStringValue } from "../helper";
+import { dateUtil } from "/@/utils/dateUtil";
+import { cloneDeep, uniqBy } from "lodash-es";
+import { error } from "/@/utils/log";
 
 interface UseFormActionContext {
   emit: EmitType;
@@ -40,7 +40,7 @@ export function useFormEvents({
       formModel[key] = defaultValueRef.value[key];
     });
     clearValidate();
-    emit('reset', toRaw(formModel));
+    emit("reset", toRaw(formModel));
     submitOnReset && handleSubmit();
   }
 
@@ -58,10 +58,10 @@ export function useFormEvents({
       let value = values[key];
 
       //antd3升级后，online表单时间控件选中值报js错 TypeError: Reflect.has called on non-object
-      if(!(values instanceof Object)){
+      if (!(values instanceof Object)) {
         return;
       }
-      
+
       const hasKey = Reflect.has(values, key);
 
       value = handleInputNumberValue(schema?.component, value);
@@ -81,7 +81,7 @@ export function useFormEvents({
           } else {
             const { componentProps } = schema || {};
             let _props = componentProps as any;
-            if (typeof componentProps === 'function') {
+            if (typeof componentProps === "function") {
               _props = _props({ formModel });
             }
             formModel[key] = value ? (_props?.valueFormat ? value : dateUtil(value)) : null;
@@ -157,10 +157,10 @@ export function useFormEvents({
       updateData = [...data];
     }
 
-    const hasField = updateData.every((item) => item.component === 'Divider' || (Reflect.has(item, 'field') && item.field));
+    const hasField = updateData.every((item) => item.component === "Divider" || (Reflect.has(item, "field") && item.field));
 
     if (!hasField) {
-      error('All children of the form Schema array that need to be updated must contain the `field` field');
+      error("All children of the form Schema array that need to be updated must contain the `field` field");
       return;
     }
     schemaRef.value = updateData as FormSchema[];
@@ -175,10 +175,10 @@ export function useFormEvents({
       updateData = [...data];
     }
 
-    const hasField = updateData.every((item) => item.component === 'Divider' || (Reflect.has(item, 'field') && item.field));
+    const hasField = updateData.every((item) => item.component === "Divider" || (Reflect.has(item, "field") && item.field));
 
     if (!hasField) {
-      error('All children of the form Schema array that need to be updated must contain the `field` field');
+      error("All children of the form Schema array that need to be updated must contain the `field` field");
       return;
     }
     const schema: FormSchema[] = [];
@@ -192,7 +192,7 @@ export function useFormEvents({
         }
       });
     });
-    schemaRef.value = uniqBy(schema, 'field');
+    schemaRef.value = uniqBy(schema, "field");
   }
 
   function getFieldsValue(): Recordable {
@@ -227,11 +227,14 @@ export function useFormEvents({
   }
 
   /**
-   * @description: Form submission
+   * @description: Form submission, form 提交按钮
    */
   async function handleSubmit(e?: Event): Promise<void> {
     e && e.preventDefault();
     const { submitFunc } = unref(getProps);
+    console.log("getProps");
+    console.log(getProps);
+    console.log(submitFunc);
     if (submitFunc && isFunction(submitFunc)) {
       await submitFunc();
       return;
@@ -245,18 +248,23 @@ export function useFormEvents({
       for (let key in values) {
         if (values[key] instanceof Array) {
           let valueType = getValueType(getProps, key);
-          if (valueType === 'string') {
-            values[key] = values[key].join(',');
+          if (valueType === "string") {
+            values[key] = values[key].join(",");
           }
         }
       }
+      console.log("values")
+      console.log(await validate())
+      console.log(formElRef)
+      console.log(values)
       //--updateBy-end----author:zyf---date:20211206------for:对查询表单提交的数组处理成字符串------
       const res = handleFormValues(values);
-      emit('submit', res);
+      console.log(res)
+      emit("submit", res);
     } catch (error) {
       //update-begin-author:taoyan date:2022-11-4 for: 列表查询表单会触发校验错误导致重置失败，原因不明
-      emit('submit', {});
-      console.error('query form validate error, please ignore!', error)
+      emit("submit", {});
+      console.error("query form validate error, please ignore!", error);
       //throw new Error(error);
       //update-end-author:taoyan date:2022-11-4 for: 列表查询表单会触发校验错误导致重置失败，原因不明
     }

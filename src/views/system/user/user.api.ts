@@ -1,35 +1,35 @@
-import { defHttp } from '/@/utils/http/axios';
-import { Modal } from 'ant-design-vue';
+import { defHttp } from "/@/utils/http/axios";
+import { Modal } from "ant-design-vue";
 
 enum Api {
-  listNoCareTenant = '/sys/user/listAll',
-  list = '/sys/user/list',
-  save = '/sys/user/add',
-  edit = '/sys/user/edit',
-  agentSave = '/sys/sysUserAgent/add',
-  agentEdit = '/sys/sysUserAgent/edit',
-  getUserRole = '/sys/user/queryUserRole',
-  duplicateCheck = '/sys/duplicate/check',
-  deleteUser = '/sys/user/delete',
-  deleteBatch = '/sys/user/deleteBatch',
-  importExcel = '/sys/user/importExcel',
-  exportXls = '/sys/user/exportXls',
-  recycleBinList = '/sys/user/recycleBin',
-  putRecycleBin = '/sys/user/putRecycleBin',
-  deleteRecycleBin = '/sys/user/deleteRecycleBin',
-  allRolesList = '/sys/role/queryall',
-  allRolesListNoByTenant = '/sys/role/queryallNoByTenant',
-  allTenantList = '/sys/tenant/queryList',
-  allPostList = '/sys/position/list',
-  userDepartList = '/sys/user/userDepartList',
-  changePassword = '/sys/user/changePassword',
-  frozenBatch = '/sys/user/frozenBatch',
-  getUserAgent = '/sys/sysUserAgent/queryByUserName',
-  userQuitAgent = '/sys/user/userQuitAgent',
-  getQuitList = '/sys/user/getQuitList',
-  putCancelQuit = '/sys/user/putCancelQuit',
-  updateUserTenantStatus='/sys/tenant/updateUserTenantStatus',
-  getUserTenantPageList='/sys/tenant/getUserTenantPageList',
+  listNoCareTenant = "/sys/user/listAll",
+  list = "/sys/user/list",
+  save = "/sys/user/add",
+  edit = "/sys/user/edit",
+  agentSave = "/sys/sysUserAgent/add",
+  agentEdit = "/sys/sysUserAgent/edit",
+  getUserRole = "/sys/user/queryUserRole",
+  duplicateCheck = "/sys/duplicate/check",
+  deleteUser = "/sys/user/delete",
+  deleteBatch = "/sys/user/deleteBatch",
+  importExcel = "/sys/user/importExcel",
+  exportXls = "/sys/user/exportXls",
+  recycleBinList = "/sys/user/recycleBin",
+  putRecycleBin = "/sys/user/putRecycleBin",
+  deleteRecycleBin = "/sys/user/deleteRecycleBin",
+  allRolesList = "/sys/role/queryall",
+  allRolesListNoByTenant = "/sys/role/queryallNoByTenant",
+  allTenantList = "/sys/tenant/queryList",
+  allPostList = "/sys/position/list",
+  userDepartList = "/sys/user/userDepartList",
+  changePassword = "/sys/user/changePassword",
+  frozenBatch = "/sys/user/frozenBatch",
+  getUserAgent = "/sys/sysUserAgent/queryByUserName",
+  userQuitAgent = "/sys/user/userQuitAgent",
+  getQuitList = "/sys/user/getQuitList",
+  putCancelQuit = "/sys/user/putCancelQuit",
+  updateUserTenantStatus = "/sys/tenant/updateUserTenantStatus",
+  getUserTenantPageList = "/sys/tenant/getUserTenantPageList",
 }
 /**
  * 导出api
@@ -56,7 +56,7 @@ export const listNoCareTenant = (params) => defHttp.get({ url: Api.listNoCareTen
  * 用户角色接口
  * @param params
  */
-export const getUserRoles = (params) => defHttp.get({ url: Api.getUserRole, params }, { errorMessageMode: 'none' });
+export const getUserRoles = (params) => defHttp.get({ url: Api.getUserRole, params }, { errorMessageMode: "none" });
 
 /**
  * 删除用户
@@ -72,10 +72,10 @@ export const deleteUser = (params, handleSuccess) => {
  */
 export const batchDeleteUser = (params, handleSuccess) => {
   Modal.confirm({
-    title: '确认删除',
-    content: '是否删除选中数据',
-    okText: '确认',
-    cancelText: '取消',
+    title: "确认删除",
+    content: "是否删除选中数据",
+    okText: "确认",
+    cancelText: "取消",
     onOk: () => {
       return defHttp.delete({ url: Api.deleteBatch, data: params }, { joinParamsToUrl: true }).then(() => {
         handleSuccess();
@@ -136,7 +136,7 @@ export const getAllTenantList = (params) => defHttp.get({ url: Api.allTenantList
 /**
  * 获取指定用户负责部门
  */
-export const getUserDepartList = (params) => defHttp.get({ url: Api.userDepartList, params }, { successMessageMode: 'none' });
+export const getUserDepartList = (params) => defHttp.get({ url: Api.userDepartList, params }, { successMessageMode: "none" });
 /**
  * 获取全部职务
  */

@@ -55,6 +55,9 @@ export function openWindow(url: string, opt?: { target?: TargetContext | string;
 }
 
 // dynamic use hook props
+/**
+ * 泛型类型 T 的属性并将其转换为泛型类型 U 的部分属性
+ */
 export function getDynamicProps<T, U>(props: T): Partial<U> {
   const ret: Recordable = {};
 

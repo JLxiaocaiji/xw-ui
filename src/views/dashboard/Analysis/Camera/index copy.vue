@@ -19,7 +19,6 @@
   });
 
   const initPlayer = () => {
-    console.log(1111);
     if (playerManager.value.player) {
       return;
     }

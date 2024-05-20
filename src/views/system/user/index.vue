@@ -49,7 +49,7 @@
     <!-- 离职受理人弹窗 -->
     <UserQuitAgentModal @register="registerQuitAgentModal" @success="reload" />
     <!-- 离职人员列弹窗 -->
-    <UserQuitModal @register="registerQuitModal" @success="reload" />
+    <!-- <UserQuitModal @register="registerQuitModal" @success="reload" /> -->
   </div>
 </template>
 
@@ -99,6 +99,8 @@
       formConfig: {
         // labelWidth: 200,
         schemas: searchFormSchema,
+        // 超过指定列数默认折叠, 控制 form 筛选数
+        autoAdvancedCol: 3,
       },
       actionColumn: {
         width: 120,
@@ -117,6 +119,13 @@
   });
 
   //注册table数据
+  /**
+   * @param registerTable: table 操作方法
+   * @param reload: 重载
+   * @param rowSelection: columnWidth, onChange, selectedRowKeys, selectedRows, type
+   * @param selectedRows: 选中行
+   * @param selectedRowKeys: 选中行的 keys
+   * */
   const [registerTable, { reload, updateTableDataRecord }, { rowSelection, selectedRows, selectedRowKeys }] = tableContext;
 
   /**
