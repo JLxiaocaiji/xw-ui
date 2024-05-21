@@ -11,8 +11,9 @@
       </div>
 
       <div :class="`${prefixCls}__toolbar`">
-        <slot name="toolbar"></slot>
+        <slot name="toolbar"></slot> 
         <Divider type="vertical" v-if="$slots.toolbar && showTableSetting" />
+        <!-- table 右上组件 -->
         <TableSetting :class="`${prefixCls}__toolbar-desktop`" style="white-space: nowrap;" :setting="tableSetting" v-if="showTableSetting" @columns-change="handleColumnChange" />
         <a-popover :overlayClassName="`${prefixCls}__toolbar-mobile`" trigger="click" placement="left" :getPopupContainer="(n) => n?.parentElement">
           <template #content>

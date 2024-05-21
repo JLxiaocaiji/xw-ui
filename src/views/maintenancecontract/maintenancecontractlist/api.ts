@@ -30,8 +30,11 @@ export const addContract = (params) => defHttp.post({ url: Api.add, params });
  * 合同删除
  * @param params
  */
-export const delContract = (params) => defHttp.delete({ url: Api.del, params });
-
+export const delContract = (params, fn) => {
+  defHttp.delete({ url: Api.del, params }).then(() => {
+    fn();
+  });
+};
 /**
  * 合同删除
  * @param params

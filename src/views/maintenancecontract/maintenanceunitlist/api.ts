@@ -18,22 +18,26 @@ export const list = (params) => defHttp.get({ url: Api.list, params });
  * 单位编辑
  * @param params
  */
-export const editPlan = (params) => defHttp.put({ url: Api.edit, params });
+export const editUnit = (params) => defHttp.put({ url: Api.edit, params });
 
 /**
  * 单位新增
  * @param params
  */
-export const addPlan = (params) => defHttp.post({ url: Api.add, params });
+export const addUnit = (params) => defHttp.post({ url: Api.add, params });
 
 /**
  * 单位删除
  * @param params
  */
-export const delPlan = (params) => defHttp.delete({ url: Api.del, params });
+export const delUnit = (params, fn) => {
+  defHttp.delete({ url: Api.del, params }, { joinParamsToUrl: true }).then(() => {
+    fn();
+  });
+};
 
 /**
- * 单位删除
+ * 单位批量删除
  * @param params
  */
-export const delPlanList = (params) => defHttp.delete({ url: Api.delList, params });
+export const delUnitList = (params) => defHttp.delete({ url: Api.delList, params });

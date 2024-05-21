@@ -48,20 +48,24 @@ export function useModal(): UseModalReturnType {
   };
 
   const methods: ReturnMethods = {
+    // 设置模态框的属性
     setModalProps: (props: Partial<ModalProps>): void => {
       getInstance()?.setModalProps(props);
     },
-
+    // 是否可见
     getVisible: computed((): boolean => {
       return visibleData[~~unref(uid)];
     }),
+    // 是否打开
     getOpen: computed((): boolean => {
       return visibleData[~~unref(uid)];
     }),
+    // 重新计算模态框的高度
     redoModalHeight: () => {
       getInstance()?.redoModalHeight?.();
     },
 
+    // visible:是否可见，默认为 true、data:传递给模态框的数据，默认为 undefined、openOnSet:是否在设置数据时就打开模态框，默认为 true
     openModal: <T = any>(visible = true, data?: T, openOnSet = true): void => {
       // update-begin--author:liaozhiyang---date:20231218---for：【QQYUN-6366】升级到antd4.x
       getInstance()?.setModalProps({
@@ -82,6 +86,7 @@ export function useModal(): UseModalReturnType {
       }
     },
 
+    // 关闭
     closeModal: () => {
       // update-begin--author:liaozhiyang---date:20231218---for：【QQYUN-6366】升级到antd4.x
       getInstance()?.setModalProps({ open: false });

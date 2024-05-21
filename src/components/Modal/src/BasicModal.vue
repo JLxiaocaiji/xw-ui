@@ -1,7 +1,15 @@
 <template>
   <Modal v-bind="getBindValue" @cancel="handleCancel">
     <template #closeIcon v-if="!$slots.closeIcon">
-      <ModalClose :canFullscreen="getProps.canFullscreen" :fullScreen="fullScreenRef" :commentSpan="commentSpan" :enableComment="getProps.enableComment" @comment="handleComment" @cancel="handleCancel" @fullscreen="handleFullScreen" />
+      <ModalClose
+        :canFullscreen="getProps.canFullscreen"
+        :fullScreen="fullScreenRef"
+        :commentSpan="commentSpan"
+        :enableComment="getProps.enableComment"
+        @comment="handleComment"
+        @cancel="handleCancel"
+        @fullscreen="handleFullScreen"
+      />
     </template>
 
     <template #title v-if="!isNoTitle">
@@ -18,7 +26,7 @@
 
     <!-- update-begin-author:taoyan date:2022-7-18 for:  modal弹窗 支持评论 slot -->
     <a-row class="jeecg-modal-wrapper">
-      <a-col :span="24-commentSpan" class="jeecg-modal-content">
+      <a-col :span="24 - commentSpan" class="jeecg-modal-content">
         <ModalWrapper
           :useWrapper="getProps.useWrapper"
           :footerOffset="wrapperFooterOffset"
@@ -33,52 +41,51 @@
           :modalFooterHeight="footer !== undefined && !footer ? 0 : undefined"
           v-bind="omit(getProps.wrapperProps, 'visible', 'height', 'modalFooterHeight')"
           @ext-height="handleExtHeight"
-          @height-change="handleHeightChange">
+          @height-change="handleHeightChange"
+        >
           <slot></slot>
         </ModalWrapper>
       </a-col>
-      
+
       <a-col :span="commentSpan" class="jeecg-comment-outer">
         <slot name="comment"></slot>
       </a-col>
-      
     </a-row>
     <!-- update-end-author:taoyan date:2022-7-18 for:  modal弹窗 支持评论 slot -->
-    
+
     <template #[item]="data" v-for="item in Object.keys(omit($slots, 'default'))">
       <slot :name="item" v-bind="data || {}"></slot>
     </template>
   </Modal>
 </template>
 <script lang="ts">
-  import type { ModalProps, ModalMethods } from './typing';
+  import type { ModalProps, ModalMethods } from "./typing";
 
-  import { defineComponent, computed, ref, watch, unref, watchEffect, toRef, getCurrentInstance, nextTick } from 'vue';
-  import Modal from './components/Modal';
-  import ModalWrapper from './components/ModalWrapper.vue';
-  import ModalClose from './components/ModalClose.vue';
-  import ModalFooter from './components/ModalFooter.vue';
-  import ModalHeader from './components/ModalHeader.vue';
-  import { isFunction } from '/@/utils/is';
-  import { deepMerge } from '/@/utils';
-  import { basicProps } from './props';
-  import { useFullScreen } from './hooks/useModalFullScreen';
-  import { omit } from 'lodash-es';
-  import { useDesign } from '/@/hooks/web/useDesign';
-  import { useAppInject } from '/@/hooks/web/useAppInject';
-
+  import { defineComponent, computed, ref, watch, unref, watchEffect, toRef, getCurrentInstance, nextTick } from "vue";
+  import Modal from "./components/Modal";
+  import ModalWrapper from "./components/ModalWrapper.vue";
+  import ModalClose from "./components/ModalClose.vue";
+  import ModalFooter from "./components/ModalFooter.vue";
+  import ModalHeader from "./components/ModalHeader.vue";
+  import { isFunction } from "/@/utils/is";
+  import { deepMerge } from "/@/utils";
+  import { basicProps } from "./props";
+  import { useFullScreen } from "./hooks/useModalFullScreen";
+  import { omit } from "lodash-es";
+  import { useDesign } from "/@/hooks/web/useDesign";
+  import { useAppInject } from "/@/hooks/web/useAppInject";
 
   export default defineComponent({
-    name: 'BasicModal',
+    name: "BasicModal",
     components: { Modal, ModalWrapper, ModalClose, ModalFooter, ModalHeader },
     inheritAttrs: false,
     props: basicProps,
-    emits: ['visible-change', 'open-change', 'height-change', 'cancel', 'ok', 'register', 'update:visible', 'update:open', 'fullScreen'],
-    setup(props, { emit, attrs , slots}) {
+    emits: ["visible-change", "open-change", "height-change", "cancel", "ok", "register", "update:visible", "update:open", "fullScreen"],
+    setup(props, { emit, attrs, slots }) {
       const visibleRef = ref(false);
       const propsRef = ref<Partial<ModalProps> | null>(null);
       const modalWrapperRef = ref<any>(null);
-      const { prefixCls } = useDesign('basic-modal');
+      const { prefixCls } = useDesign("basic-modal");
       // modal   Bottom and top height
       const extHeightRef = ref(0);
       const modalMethods: ModalMethods = {
@@ -95,7 +102,7 @@
 
       const instance = getCurrentInstance();
       if (instance) {
-        emit('register', modalMethods, instance.uid);
+        emit("register", modalMethods, instance.uid);
       }
       const { getIsMobile } = useAppInject();
 
@@ -113,18 +120,18 @@
         // update-end--author:liaozhiyang---date:20240326---for：【QQYUN-8643】弹窗移动端弹窗统一全屏
         return result;
       });
-        //update-begin-author:liusq date:2023-05-25 for:【issues/4856】Modal控件设置 :title = null 无效
-        //是否未设置标题
-        const isNoTitle = computed(() => {
-            //标题为空并且不含有标题插槽
-            return !unref(getMergeProps).title && !slots.title;
-        });
-        //update-end-author:liusq date:2023-05-25 for:【issues/4856】Modal控件设置 :title = null 无效
+      //update-begin-author:liusq date:2023-05-25 for:【issues/4856】Modal控件设置 :title = null 无效
+      //是否未设置标题
+      const isNoTitle = computed(() => {
+        //标题为空并且不含有标题插槽
+        return !unref(getMergeProps).title && !slots.title;
+      });
+      //update-end-author:liusq date:2023-05-25 for:【issues/4856】Modal控件设置 :title = null 无效
 
       const { handleFullScreen, getWrapClassName, fullScreenRef } = useFullScreen({
         modalWrapperRef,
         extHeightRef,
-        wrapClassName: toRef(getMergeProps.value, 'wrapClassName'),
+        wrapClassName: toRef(getMergeProps.value, "wrapClassName"),
       });
 
       // modal component does not need title and origin buttons
@@ -152,9 +159,10 @@
         };
         if (unref(fullScreenRef)) {
           // 删除对象属性
-          return omit(attr, ['height', 'title', 'visible']);
+          return omit(attr, ["height", "title", "visible"]);
         }
-        return omit(attr, ['title', 'visible']);
+        // 删除对象属性
+        return omit(attr, ["title", "visible"]);
         // update-end--author:liaozhiyang---date:20231218---for：【QQYUN-6366】升级到antd4.x
       });
 
@@ -167,7 +175,7 @@
         fullScreenRef.value = !!props.defaultFullscreen;
         // update-begin--author:liaozhiyang---date:20240326---for：【QQYUN-8643】弹窗移动端弹窗统一全屏
         if (getIsMobile.value) {
-          fullScreenRef.value = true
+          fullScreenRef.value = true;
         }
         // update-end--author:liaozhiyang---date:20240326---for：【QQYUN-8643】弹窗移动端弹窗统一全屏
       });
@@ -183,9 +191,9 @@
       watch(
         () => unref(visibleRef),
         (v) => {
-          emit('visible-change', v);
-          emit('update:visible', v);
-          emit('update:open', v);
+          emit("visible-change", v);
+          emit("update:visible", v);
+          emit("update:open", v);
           instance && modalMethods.emitVisible?.(v, instance.uid);
           nextTick(() => {
             if (props.scrollTop && v && unref(modalWrapperRef)) {
@@ -202,7 +210,7 @@
       async function handleCancel(e: Event) {
         e?.stopPropagation();
         // 过滤自定义关闭按钮的空白区域
-        if ((e.target as HTMLElement)?.classList?.contains(prefixCls + '-close--custom')) return;
+        if ((e.target as HTMLElement)?.classList?.contains(prefixCls + "-close--custom")) return;
         if (props.closeFunc && isFunction(props.closeFunc)) {
           const isClose: boolean = await props.closeFunc();
           visibleRef.value = !isClose;
@@ -210,7 +218,7 @@
         }
 
         visibleRef.value = false;
-        emit('cancel', e);
+        emit("cancel", e);
       }
 
       /**
@@ -219,28 +227,28 @@
       function setModalProps(props: Partial<ModalProps>): void {
         // Keep the last setModalProps
         propsRef.value = deepMerge(unref(propsRef) || ({} as any), props);
-        if (Reflect.has(props, 'visible')) {
+        if (Reflect.has(props, "visible")) {
           visibleRef.value = !!props.visible;
         }
-        if (Reflect.has(props, 'open')) {
+        if (Reflect.has(props, "open")) {
           visibleRef.value = !!props.open;
         }
-        if (Reflect.has(props, 'defaultFullscreen')) {
+        if (Reflect.has(props, "defaultFullscreen")) {
           fullScreenRef.value = !!props.defaultFullscreen;
-           // update-begin--author:liaozhiyang---date:20240326---for：【QQYUN-8643】弹窗移动端弹窗统一全屏
+          // update-begin--author:liaozhiyang---date:20240326---for：【QQYUN-8643】弹窗移动端弹窗统一全屏
           if (getIsMobile.value) {
-            fullScreenRef.value = true
+            fullScreenRef.value = true;
           }
           // update-end--author:liaozhiyang---date:20240326---for：【QQYUN-8643】弹窗移动端弹窗统一全屏
         }
       }
 
       function handleOk(e: Event) {
-        emit('ok', e);
+        emit("ok", e);
       }
 
       function handleHeightChange(height: string) {
-        emit('height-change', height);
+        emit("height-change", height);
       }
 
       function handleExtHeight(height: number) {
@@ -255,21 +263,25 @@
 
       //update-begin-author:taoyan date:2022-7-18 for: modal支持评论 slot
       const commentSpan = ref(0);
-      watch(()=>props.enableComment, (flag)=>{
-        handleComment(flag)
-      }, {immediate:true});
-      function handleComment(flag){
-        if(flag=== true){
-          commentSpan.value = 6
-        }else{
-          commentSpan.value = 0
+      watch(
+        () => props.enableComment,
+        (flag) => {
+          handleComment(flag);
+        },
+        { immediate: true }
+      );
+      function handleComment(flag) {
+        if (flag === true) {
+          commentSpan.value = 6;
+        } else {
+          commentSpan.value = 0;
         }
       }
       //update-end-author:taoyan date:2022-7-18 for: modal支持评论 slot
 
       // update-begin--author:liaozhiyang---date:20230804---for：【QQYUN-5866】放大行数自适应
-      watch(fullScreenRef,(val)=>{
-        emit('fullScreen',val);
+      watch(fullScreenRef, (val) => {
+        emit("fullScreen", val);
       });
       // update-begin--author:liaozhiyang---date:20230804---for：【QQYUN-5866】放大行数自适应
 
@@ -290,7 +302,7 @@
         getWrapperHeight,
         commentSpan,
         handleComment,
-        isNoTitle
+        isNoTitle,
       };
     },
   });
@@ -299,12 +311,12 @@
   /*update-begin-author:taoyan date:2022-7-27 for:modal评论区域样式*/
   .jeecg-comment-outer {
     border-left: 1px solid #f0f0f0;
-    .ant-tabs-nav-wrap{
-    /*  text-align: center;*/
+    .ant-tabs-nav-wrap {
+      /*  text-align: center;*/
     }
   }
-  .jeecg-modal-content{
-    >.scroll-container{
+  .jeecg-modal-content {
+    > .scroll-container {
       //update-begin---author:wangshuai---date:2023-12-05---for:【QQYUN-7297】表单讨论弹窗放大按钮时只显示一部分---
       padding: 6px;
       //update-end---author:wangshuai---date:2023-12-05---for:【QQYUN-7297】表单讨论弹窗放大按钮时只显示一部分---
@@ -317,7 +329,7 @@
   .jeecg-modal-content {
     height: 100%;
   }
-  html[data-theme='dark'] {
+  html[data-theme="dark"] {
     .jeecg-comment-outer {
       border-left: 1px solid rgba(253, 253, 253, 0.12);
     }

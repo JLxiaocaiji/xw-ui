@@ -4,27 +4,19 @@
     <BasicTable @register="registerTable" :rowSelection="rowSelection" :indexColumnProps="indexColumnProps">
       <!--插槽:table标题-->
       <template #tableTitle>
-        <a-button type="primary" preIcon="ant-design:plus-outlined" @click="handleCreate">新增</a-button>
+        <a-button type="primary" preIcon="ant-design:plus-outlined" @click="handleAddModal">新增</a-button>
         <a-dropdown v-if="selectedRowKeys.length > 0">
           <template #overlay>
             <a-menu>
               <a-menu-item key="1" @click="batchHandleDelete">
-                <Icon icon="ant-design:delete-outlined"></Icon>
+                <Icon icon="ant-design:delete-outlined" />
                 删除
-              </a-menu-item>
-              <a-menu-item key="2" @click="batchFrozen(2)">
-                <Icon icon="ant-design:lock-outlined"></Icon>
-                冻结
-              </a-menu-item>
-              <a-menu-item key="3" @click="batchFrozen(1)">
-                <Icon icon="ant-design:unlock-outlined"></Icon>
-                解冻
               </a-menu-item>
             </a-menu>
           </template>
           <a-button
             >批量操作
-            <Icon icon="mdi:chevron-down"></Icon>
+            <Icon icon="mdi:chevron-down" />
           </a-button>
         </a-dropdown>
       </template>
@@ -33,15 +25,20 @@
         <TableAction :actions="getTableAction(record)" />
       </template>
     </BasicTable>
+
+    <!-- 新增维保合同 modal -->
+    <ContractModal @register="registerAddContractModal" @success="reload" :title="modalTitle" />
   </div>
 </template>
 
 <script lang="ts" setup>
   import { BasicTable, TableAction, ActionItem } from "/@/components/Table";
   import { useListPage } from "/@/hooks/system/useListPage";
-  import { columns, searchFormSchema } from "./user.data";
-  import { getContractList } from "./api";
+  import { columns, searchFormSchema } from "./data";
+  import { getContractList, delContract } from "./api";
   import { useMessage } from "/@/hooks/web/useMessage";
+  import { ref, unref } from "vue";
+  import { useModal } from "/@/components/Modal";
 
   // 列表页面公共参数、方法
   const { tableContext } = useListPage({
@@ -91,26 +88,16 @@
   function getTableAction(record): ActionItem[] {
     return [
       {
-        label: "编辑",
-        onClick: handleEdit.bind(null, record),
+        label: "详情",
+        onClick: handleDetail.bind(null, record),
       },
       {
         label: "删除",
         onClick: handleDelete.bind(null, record),
       },
-      {
-        label: "详情",
-        onClick: handleDetail.bind(null, record),
-      },
     ];
   }
 
-  /**
-   * 编辑事件
-   */
-  async function handleEdit(record: Recordable) {
-    console.log(record);
-  }
   /**
    * 详情
    */
@@ -122,14 +109,20 @@
    */
   async function handleDelete(record) {
     console.log(record);
-    // if ("admin" == record.username) {
-    //   createMessage.warning("管理员账号不允许此操作！");
-    //   return;
-    // }
-    // await deleteUser({ id: record.id }, reload);
+    await delContract({ id: record.id }, reload);
   }
 
-  const { createMessage, createConfirm } = useMessage();
+  const [registerAddContractModal, { openModal: openModal }] = useModal();
+
+  const modalTitle = ref<string>();
+
+  /**
+   * 新增操作
+   */
+  const handleAddModal = () => {
+    modalTitle.value = "新增";
+    openModal(true, {});
+  };
 </script>
 
 <style lang="" scoped></style>

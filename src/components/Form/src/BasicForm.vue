@@ -319,6 +319,8 @@
 
       console.log(100000);
       // getFormActionBindProps
+      console.log({ ...getProps.value });
+      console.log({ ...advanceState });
       console.log(computed((): Recordable => ({ ...getProps.value, ...advanceState })));
 
       return {

@@ -49,7 +49,7 @@
     <!-- 离职受理人弹窗 -->
     <UserQuitAgentModal @register="registerQuitAgentModal" @success="reload" />
     <!-- 离职人员列弹窗 -->
-    <!-- <UserQuitModal @register="registerQuitModal" @success="reload" /> -->
+    <UserQuitModal @register="registerQuitModal" @success="reload" />
   </div>
 </template>
 

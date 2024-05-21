@@ -74,6 +74,9 @@ import JRangeDate from './jeecg/components/JRangeDate.vue'
 import JRangeTime from './jeecg/components/JRangeTime.vue'
 import RoleSelectInput from './jeecg/components/roleSelect/RoleSelectInput.vue';
 
+// 自定义链接
+import JLink from './jeecg/components/JLink.vue';
+
 const componentMap = new Map<ComponentType, Component>();
 
 componentMap.set('Time', Time);
@@ -163,6 +166,7 @@ componentMap.set('RangeDate', JRangeDate);
 componentMap.set('RangeTime', JRangeTime);
 componentMap.set('RoleSelect', RoleSelectInput);
 
+componentMap.set('JLink', JLink);
 
 
 export function add(compName: ComponentType, component: Component) {
