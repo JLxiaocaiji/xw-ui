@@ -1,4 +1,4 @@
-import { defHttp } from "/@/utils/http/axios";
+import { otherHttp } from "/@/utils/http/axios";
 
 enum Api {
   deviceList = "/device/list",
@@ -10,19 +10,19 @@ enum Api {
  * @description: 获取设备列表
  */
 export function getDeviceList(params) {
-  return defHttp.get({ url: Api.deviceList, params });
+  return otherHttp.get({ url: Api.deviceList, params });
 }
 
 /**
  * @description: 设备类型下拉列表
  */
 export function getDeviceType() {
-  return defHttp.get({ url: Api.deviceType });
+  return otherHttp.get({ url: Api.deviceType });
 }
 
 /**
  * @description: 设备状态下拉列表
  */
 export function getDeviceState() {
-  return defHttp.get({ url: Api.deviceStatus });
+  return otherHttp.get({ url: Api.deviceStatus });
 }

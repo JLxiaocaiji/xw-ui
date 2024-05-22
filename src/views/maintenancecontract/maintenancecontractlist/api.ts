@@ -31,7 +31,7 @@ export const addContract = (params) => defHttp.post({ url: Api.add, params });
  * @param params
  */
 export const delContract = (params, fn) => {
-  defHttp.delete({ url: Api.del, params }).then(() => {
+  defHttp.delete({ url: Api.del, params }, { joinParamsToUrl: true }).then(() => {
     fn();
   });
 };

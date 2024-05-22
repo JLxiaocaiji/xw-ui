@@ -4,7 +4,7 @@ import { RoleEnum } from '/@/enums/roleEnum';
 export interface ActionItem extends ButtonProps {
   onClick?: Fn;
   label?: string;
-  color?: 'success' | 'error' | 'warning';
+  color?: "success" | "error" | "warning";
   icon?: string;
   popConfirm?: PopConfirm;
   disabled?: boolean;

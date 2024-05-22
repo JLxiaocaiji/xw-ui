@@ -10,7 +10,7 @@
   import { formPasswordSchema } from "./data";
   import { addContract, editContract } from "./api";
 
-  const props = defineProps({
+  defineProps({
     title: { type: String, default: "" },
   });
 
@@ -32,7 +32,7 @@
       const values = await validate();
       setModalProps({ confirmLoading: true });
       //提交表单
-      await (props.title == "新增" ? addContract(values) : editContract(values));
+      await addContract(values);
       //关闭弹窗
       closeModal();
       //刷新列表
@@ -50,4 +50,4 @@
   });
 </script>
 
-<style lang="" scoped></style>
+<style lang="less" scoped></style>

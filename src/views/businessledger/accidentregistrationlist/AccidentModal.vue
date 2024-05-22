@@ -4,22 +4,18 @@
   </BasicModal>
 </template>
 
-<script lang="ts" setup name="AddUnitModal">
+<script lang="ts" setup name="AccidentModal">
   import { BasicModal, useModalInner } from "/@/components/Modal";
   import { BasicForm, useForm } from "/@/components/Form/index";
   import { formPasswordSchema } from "./data";
-  import { addUnit, editUnit } from "./api";
-  import { ref } from "vue";
+  import { add, edit } from "./api";
 
-  const props = defineProps({
+  defineProps({
     title: { type: String, default: "" },
   });
 
-  const id = ref();
-
   //表单赋值
   const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
-    id.value = data?.id;
     //重置表单
     await resetFields();
     setModalProps({ confirmLoading: false });
@@ -36,7 +32,7 @@
       const values = await validate();
       setModalProps({ confirmLoading: true });
       //提交表单
-      await (props.title == "新增" ? addUnit(values) : editUnit({ ...values, id: id.value }));
+      await add(values);
       //关闭弹窗
       closeModal();
       //刷新列表
@@ -54,4 +50,4 @@
   });
 </script>
 
-<style lang="" scoped></style>
+<style lang="less" scoped></style>

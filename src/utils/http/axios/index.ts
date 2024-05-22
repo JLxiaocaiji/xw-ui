@@ -22,6 +22,13 @@ const globSetting = useGlobSetting();
 const urlPrefix = globSetting.urlPrefix;
 const { createMessage, createErrorModal } = useMessage();
 
+import { useAppStore } from "/@/store/modules/app";
+import { storeToRefs } from "pinia";
+import { create } from "sortablejs";
+
+// const store = useAppStore();
+// const { currentUnitId } = storeToRefs(store);
+
 /**
  * @description: 数据处理，方便区分多种处理方式
  */
@@ -297,8 +304,8 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
 export const defHttp = createAxios();
 
 // other api url
-// export const otherHttp = createAxios({
-//   requestOptions: {
-//     apiUrl: 'xxx',
-//   },
-// });
+export const otherHttp = createAxios({
+  params: {
+    unitId: "37",
+  },
+});

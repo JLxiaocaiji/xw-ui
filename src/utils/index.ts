@@ -106,7 +106,7 @@ export function cloneObject(obj) {
   return JSON.parse(JSON.stringify(obj));
 }
 
-// 设置为全局组件
+// 设置为全局组件, 以 alias 别名作为 key;
 export const withInstall = <T>(component: T, alias?: string) => {
   //console.log("---初始化---", component)
 

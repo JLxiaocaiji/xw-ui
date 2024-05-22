@@ -27,7 +27,7 @@
     </BasicTable>
 
     <!-- 新增维保合同 modal -->
-    <ContractModal @register="registerAddContractModal" @success="reload" :title="modalTitle" />
+    <ContractModal @register="registerContractModal" @success="reload" :title="modalTitle" />
   </div>
 </template>
 
@@ -39,6 +39,7 @@
   import { useMessage } from "/@/hooks/web/useMessage";
   import { ref, unref } from "vue";
   import { useModal } from "/@/components/Modal";
+  import ContractModal from "./ContractModal.vue";
 
   // 列表页面公共参数、方法
   const { tableContext } = useListPage({
@@ -93,7 +94,10 @@
       },
       {
         label: "删除",
-        onClick: handleDelete.bind(null, record),
+        popConfirm: {
+          title: "是否确认删除",
+          confirm: handleDelete.bind(null, record),
+        },
       },
     ];
   }
@@ -109,10 +113,10 @@
    */
   async function handleDelete(record) {
     console.log(record);
-    await delContract({ id: record.id }, reload);
+    await delContract({ id: record.id.toString() }, reload);
   }
 
-  const [registerAddContractModal, { openModal: openModal }] = useModal();
+  const [registerContractModal, { openModal: openModal }] = useModal();
 
   const modalTitle = ref<string>();
 

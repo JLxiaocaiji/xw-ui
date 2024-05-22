@@ -54,106 +54,87 @@ export const columns: BasicColumn[] = [
 
 export const formPasswordSchema: FormSchema[] = [
   {
-    label: "单位名称",
+    label: "合同编号",
     field: "companyName",
     component: "Input",
     rules: [
       {
         required: true,
-        message: "请输入名称",
+        message: "请输入合同编号",
       },
     ],
   },
   {
-    label: "单位类型",
+    label: "名称",
     field: "companyType",
-    component: "Select",
+    component: "Input",
     rules: [
       {
         required: true,
-        message: "请选择单位类型",
+        message: "请输入单位类型",
       },
     ],
+  },
+  {
+    label: "维保公司名称",
+    field: "companyArea",
+    component: "Input",
+    rules: [
+      {
+        required: true,
+        message: "请输入公司名称",
+      },
+    ],
+  },
+  {
+    label: "签订时间",
+    field: "responsiblePerson",
+    component: "DatePicker",
+    rules: [
+      {
+        required: true,
+      },
+    ],
+  },
+  {
+    label: "有效开始时间",
+    field: "companyAddress",
+    component: "DatePicker",
+    rules: [
+      {
+        required: true,
+      },
+    ],
+  },
+  {
+    label: "有效期截止时间",
+    field: "responsiblePersonPhone",
+    component: "DatePicker",
+    rules: [
+      {
+        required: true,
+      },
+    ],
+  },
+  {
+    label: "状态 ",
+    field: "password",
+    component: "Select",
     componentProps: {
       options: [
-        { label: "检测维保", value: 0 },
-        { label: "项目施工", value: 1 },
-        { label: "项目运维", value: 2 },
+        { label: "待签订", value: 0 },
+        { label: "已签订", value: 1 },
+        { label: "已作废", value: 2 },
+        { label: "已过期", value: 3 },
       ],
     },
   },
   {
-    label: "所属区域",
-    field: "companyArea",
-    component: "Input",
-  },
-  {
-    label: "负责人",
-    field: "responsiblePerson",
-    component: "Input",
-    rules: [
-      {
-        required: true,
-        message: "请输入负责人",
-      },
-    ],
-  },
-  {
-    label: "维保单位地址",
-    field: "companyAddress",
-    component: "Input",
-  },
-  {
-    label: "电话(帐户)",
-    field: "responsiblePersonPhone",
-    component: "Input",
-    rules: [
-      {
-        required: true,
-        message: "请输入负责人电话",
-      },
-      {
-        pattern: /^1[3456789]\d{9}$/,
-        message: "请输入正确11位手机号码",
-      },
-    ],
-  },
-  {
-    label: "密码",
-    field: "password",
-    component: "Input",
-    rules: [
-      {
-        required: true,
-        message: "请输入密码",
-      },
-    ],
-  },
-  {
-    label: "营业执照上传",
+    label: "上传文件",
     field: "businessLicense",
     component: "Upload",
     componentProps: {
       api: () => {},
-    },
-  },
-  {
-    label: "合同类型",
-    field: "contractType",
-    component: "Select",
-    componentProps: {
-      options: [
-        { label: "从合同", value: 0 },
-        { label: "主合同", value: 1 },
-      ],
-    },
-  },
-  {
-    label: "维保端登录地址",
-    field: "1",
-    component: "JLink",
-    componentProps: {
-      link: "http://220.180.110.56:9122/maintenance",
     },
   },
 ];
